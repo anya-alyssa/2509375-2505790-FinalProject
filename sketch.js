@@ -6,86 +6,90 @@ let playerSpeed = 5;
 
 // INITIALISE TILEMAP VARIABLES
 let tileMap = []; // creates an empty 1 dimensional array to be developed in later code to make a tile map
-let tilesX = 10; // a variable to store the amount of columns in the tile map
-let tilesY = 10; // a variable to store the amount of rows in the tile map
+let tilesX = 11; // a variable to store the amount of columns in the tile map
+let tilesY = 11; // a variable to store the amount of rows in the tile map
 let tileSize = 50; // a variable to store the amount of pixels in each tile
 let textures = [];
 
 
 //// LEVEL DATA OBJECTS
 
-let level0 = {
+let entrance = {
    graphicsMap: [
   //    Y    V  A  L  U  E  S
-  // 0  1  2  3  4  5  6  7  8  9  
-    [1, 0, 0, 0, 0, 0, 0, 2, 3, 2], // 0
-    [0, 0, 0, 0, 0, 1, 0, 0, 0, 0], // 1  X
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 2  
-    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0], // 3  V
-    [0, 1, 0, 0, 0, 1, 0, 0, 0, 0], // 4  A
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 5  L
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 6  U
-    [0, 0, 0, 1, 0, 0, 0, 0, 0, 0], // 7  E
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 8  S
-    [1, 0, 0, 0, 0, 0, 1, 0, 0, 0]  // 9
+  // 0  1  2  3  4  5  6  7  8  9  10
+    [4, 4, 4, 2, 2, 3, 2, 2, 4, 4, 4], // 0
+    [4, 4, 4, 2, 0, 0, 0, 2, 4, 4, 4], // 1  X
+    [4, 4, 4, 2, 0, 0, 0, 2, 4, 4, 4], // 2  
+    [4, 4, 4, 2, 0, 0, 0, 2, 4, 4, 4], // 3  V
+    [4, 4, 4, 2, 0, 0, 0, 2, 4, 4, 4], // 4  A
+    [4, 4, 4, 3, 0, 0, 0, 3, 4, 4, 4], // 5  L
+    [4, 4, 4, 2, 0, 0, 0, 2, 4, 4, 4], // 6  U
+    [4, 4, 4, 2, 0, 0, 0, 2, 4, 4, 4], // 7  E
+    [4, 4, 4, 2, 0, 0, 0, 2, 4, 4, 4], // 8  S
+    [4, 4, 4, 2, 0, 0, 0, 2, 4, 4, 4],  // 9
+    [4, 4, 4, 2, 2, 3, 2, 2, 4, 4, 4]  // 10
   ],
 
    tileRules: [
   //    Y    V  A  L  U  E  S
   // 0  1  2  3  4  5  6  7  8  9  
-    [1, 0, 0, 0, 0, 0, 0, 1, 2, 1], // 0
-    [0, 0, 0, 0, 0, 1, 0, 0, 0, 0], // 1  X
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 2  
-    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0], // 3  V
-    [0, 1, 0, 0, 0, 1, 0, 0, 0, 0], // 4  A
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 5  L
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 6  U
-    [0, 0, 0, 1, 0, 0, 0, 0, 0, 0], // 7  E
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 8  S
-    [1, 0, 0, 0, 0, 0, 1, 0, 0, 0]  // 9
+    [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0], // 0
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 1  X
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 2  
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 3  V
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 4  A
+    [0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0], // 5  L
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 6  U
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 7  E
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 8  S
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],  // 9
+    [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0]  // 10
   ],
   //// RULES
   // 0 = free to walk on
   // 1 = obstacle/can't walk on
   // 2 = transition tile
 
-  startTileX: 8,
+  startTileX: 6,
   startTileY: 5 // starttiles for the player
 
 }
 
-let level1 = {
+let livingRoom = {
   graphicsMap: [
   //         2nd VALUE (x)  
   //    0  1  2  3  4  5  6  7  8  9
-      [4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 0
-      [4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 1
-      [4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 2 
-      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2], // 3
-      [2, 4, 4, 4, 4, 4, 4, 4, 4, 2], // 4
-      [2, 4, 4, 4, 4, 4, 4, 4, 4, 3], // 5
-      [2, 4, 4, 4, 4, 4, 4, 4, 4, 2], // 6
-      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2], // 7
-      [4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 8
-      [4, 4, 4, 4, 4, 4, 4, 4, 4, 4]  // 9
+    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 0
+    [4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4], // 1  X
+    [4, 2, 0, 0, 1, 1, 1, 0, 0, 2, 4], // 2  
+    [4, 2, 0, 0, 0, 0, 0, 0, 0, 2, 4], // 3  V
+    [4, 2, 0, 1, 0, 4, 4, 0, 2, 2, 4], // 4  A
+    [4, 3, 0, 1, 0, 4, 4, 0, 2, 2, 4], // 5  L
+    [4, 2, 0, 1, 0, 4, 4, 0, 2, 2, 4], // 6  U
+    [4, 2, 0, 0, 0, 0, 0, 0, 0, 2, 4], // 7  E
+    [4, 2, 0, 0, 0, 1, 0, 0, 0, 2, 4], // 8  S
+    [4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4],  // 9
+    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]  // 10
   ],
 
   tileRules: [
   //         2nd VALUE (x)  
   //   0  1  2  3  4  5  6  7  8  9
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 0
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 1
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 2 
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 3
-      [1, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 4  1st VALUE (y)
-      [1, 0, 0, 0, 0, 0, 0, 0, 0, 2], // 5
-      [1, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 6
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 7
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 8
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]  // 9
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 0
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 1  X
+      [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1], // 2  
+      [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1], // 3  V
+      [1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1], // 4  A
+      [0, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1], // 5  L
+      [1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1], // 6  U
+      [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1], // 7  E
+      [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1], // 8  S
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],  // 9
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]  // 10
   ],
 
-  startTileX: 1, //Sets X tile to start player on
+  startTileX: 2, //Sets X tile to start player on
   startTileY: 5  //Sets Y tile to start player on
 }
 
@@ -126,7 +130,7 @@ let level2 = {
 }
 
 //// LEVEL CONTROL VARIABLES
-let levels = [level0, level1, level2];
+let levels = [entrance, livingRoom, level2];
 let currentLevel = 0;
 let graphicsMap;
 let tileRules;
@@ -134,12 +138,12 @@ let count;
 let countMax = 30;
 
 function setup() {
-  createCanvas(500, 500); // creates a canvas big enough for the tile map
+  createCanvas(550, 550); // creates a canvas big enough for the tile map
 
   loadLevel();
 
   // create player
-  player = new Player(playerSprite, 3, 3, tileSize, tileRules);
+  player = new Player(playerSprite, 5, 9, tileSize, tileRules);
 }
 
 function loadLevel() {
@@ -183,7 +187,7 @@ function draw() {
   for (let tileX = 0; tileX < tilesX; tileX++) {
     for (let tileY = 0; tileY < tilesY; tileY++) {
       tileMap[tileX][tileY].display();
-      tileMap[tileX][tileY].debugGrid(); // runs debug() for each tile
+      //tileMap[tileX][tileY].debugGrid(); // runs debug() for each tile
     }
   }  
 
