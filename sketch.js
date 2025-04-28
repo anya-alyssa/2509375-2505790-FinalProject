@@ -8,8 +8,11 @@ let playerSpeed = 5;
 let tileMap = []; // creates an empty 1 dimensional array to be developed in later code to make a tile map
 let tilesX = 11; // a variable to store the amount of columns in the tile map
 let tilesY = 11; // a variable to store the amount of rows in the tile map
-let tileSize = 50; // a variable to store the amount of pixels in each tile
+let tileSize = 60; // a variable to store the amount of pixels in each tile
 let textures = [];
+
+// game state
+let gameState = 1;
 
 
 //// LEVEL DATA OBJECTS
@@ -157,7 +160,7 @@ let bathroom = {
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 2  
         [1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 2], // 3  V
         [1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1], // 4  A
-        [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1], // 5  L
+        [0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 1], // 5  L
         [1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1], // 6  U
         [1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1], // 7  E
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 8  S
@@ -178,7 +181,9 @@ let count;
 let countMax = 30;
 
 function setup() {
-  createCanvas(550, 550); // creates a canvas big enough for the tile map
+  createCanvas(660, 700); // creates a canvas big enough for the tile map
+
+  textAlign(CENTER);
 
   loadLevel();
 
@@ -223,7 +228,16 @@ function preload() {
 function draw() {
   background(0);
 
-  // loops through all tiles wach time draw() is called
+if (gameState  == 0) {
+  textSize(50);
+  fill(255);
+  background(0);
+  text('main menu', width/2, height/2);
+}
+
+else if (gameState == 1) {
+  background(0);
+  // loops through all tiles each time draw() is called
   for (let tileX = 0; tileX < tilesX; tileX++) {
     for (let tileY = 0; tileY < tilesY; tileY++) {
       tileMap[tileX][tileY].display();
@@ -234,11 +248,44 @@ function draw() {
   player.display();
   player.setDirection();
   player.move();
+  player.updateSanity();
 
   if (player.transition) {
     if (count === countMax) player.transition = false;
     else count++;
   }
+
+  // sanity bar
+
+
+  // display sanity bar
+  stroke(0);
+  strokeWeight(3);
+  fill(200);
+  rect(30, 665, 600, 30);
+  strokeWeight(0);
+  
+  if (player.sanity >= 50 && player.sanity <= 100) {
+    fill(0, 255, 0); 
+  }
+
+  if (player.sanity >= 15 && player.sanity < 50) {
+    fill(255, 255, 0);
+  }
+
+  if (player.sanity > 0 && player.sanity < 15) {
+    fill(255, 0, 0);
+  }
+
+  rect(32, 667, 6 * player.sanity - 4, 26);
+}
+
+else if (gameState == 2) {
+  background(0);
+  textSize(50);
+  fill(255);
+  text('game over', width/2, height/2);
+}
 }
 
 class Player {
@@ -270,7 +317,19 @@ class Player {
     this.tileSize = tileSize;
     this.tileRules = tileRules;
     this.transition = false;
+
+    // sanity
+    this.sanity = 100;
   }
+
+  updateSanity() {
+    if (this.sanity > 0) {
+      this.sanity = this.sanity - 0.01;
+    } else if (this.sanity == 0) {
+      gameState = 2;
+    }
+    }
+  
 
   display() {
     image(this.sprite, this.xPos, this.yPos, this.tileSize, this.tileSize);
