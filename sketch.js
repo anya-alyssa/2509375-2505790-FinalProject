@@ -11,6 +11,10 @@ let tilesY = 11; // a variable to store the amount of rows in the tile map
 let tileSize = 60; // a variable to store the amount of pixels in each tile
 let textures = [];
 
+// items and inventory
+let inventory = [];
+let hasLocket = false;
+
 // game state
 let gameState = 1;
 
@@ -181,11 +185,11 @@ let count;
 let countMax = 30;
 
 function setup() {
-  createCanvas(660, 700); // creates a canvas big enough for the tile map
-
-  textAlign(CENTER);
+  createCanvas(720, 700); // creates a canvas big enough for the tile map
 
   loadLevel();
+
+  textFont('Courier New');
 
   // create player
   player = new Player(playerSprite, 5, 9, tileSize, tileRules);
@@ -210,6 +214,13 @@ function loadLevel() {
       tileID++;
     }
   }
+
+  ////GRID FOR INVENTOYR
+  //for (let tileY = 0; tileY < tilesY; tileY++) {
+    // load item images
+
+
+  //}
 }
 
 function preload() {
@@ -232,6 +243,7 @@ if (gameState  == 0) {
   textSize(50);
   fill(255);
   background(0);
+  textAlign(CENTER);
   text('main menu', width/2, height/2);
 }
 
@@ -262,28 +274,33 @@ else if (gameState == 1) {
   stroke(0);
   strokeWeight(3);
   fill(200);
-  rect(30, 665, 600, 30);
+  rect(110, 665, 600, 30);
   strokeWeight(0);
+  fill(255, 255, 0);
+  textSize(25);
+  textAlign(LEFT);
+  text('SANITY:', 5, 687);
   
-  if (player.sanity >= 50 && player.sanity <= 100) {
+  if (player.sanity >= 50 && player.sanity <= 10000) {
     fill(0, 255, 0); 
   }
 
-  if (player.sanity >= 15 && player.sanity < 50) {
+  if (player.sanity >= 15 && player.sanity < 5000) {
     fill(255, 255, 0);
   }
 
-  if (player.sanity > 0 && player.sanity < 15) {
+  if (player.sanity > 0 && player.sanity < 1500) {
     fill(255, 0, 0);
   }
 
-  rect(32, 667, 6 * player.sanity - 4, 26);
+  rect(112, 667, player.sanity/16.67 - 4, 26);
 }
 
 else if (gameState == 2) {
   background(0);
   textSize(50);
   fill(255);
+  textAlign(CENTER);
   text('game over', width/2, height/2);
 }
 }
@@ -319,12 +336,15 @@ class Player {
     this.transition = false;
 
     // sanity
-    this.sanity = 100;
+    this.sanity = 10000;
+
+    // inventory
+    this.inventory = new Inventory(11);
   }
 
   updateSanity() {
-    if (this.sanity > 0) {
-      this.sanity = this.sanity - 0.01;
+    if (this.sanity > 0 && hasLocket == false) {
+      this.sanity = this.sanity - 1;
     } else if (this.sanity == 0) {
       gameState = 2;
     }
@@ -438,6 +458,25 @@ class Player {
     //this.dirY = 0;
   }
 
+}
+
+class Inventory {
+  constructor(size = 11) {
+    this.size = size;
+    this.items = [];
+  }
+
+  addItem() {
+    //code to add an item
+  }
+
+  removeItem() {
+    //code to remove item after it is used
+  }
+
+  display() {
+    //displays item in grid
+  }
 }
 
 class Tile {
