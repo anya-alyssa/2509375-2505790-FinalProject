@@ -11,6 +11,8 @@ let tilesY = 11; // a variable to store the amount of rows in the tile map
 let tileSize = 60; // a variable to store the amount of pixels in each tile
 let textures = [];
 
+
+
 // items and inventory
 let inventory = [];
 let hasLocket = false;
@@ -41,12 +43,12 @@ let entrance = {
    tileRules: [
   //    Y    V  A  L  U  E  S
   // 0  1  2  3  4  5  6  7  8  9, 10
-    [0, 0, 0, 1, 2, 2, 2, 1, 0, 0, 0], // 0
+    [0, 0, 0, 1, "k", "k", "k", 1, 0, 0, 0], // 0
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 1  X
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 2  
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 3  V
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 4  A
-    [0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0], // 5  L
+    [0, 0, 0, "s", 0, 0, 0, "lr", 0, 0, 0], // 5  L
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 6  U
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 7  E
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 8  S
@@ -88,7 +90,7 @@ let livingRoom = {
       [1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1], // 2  
       [1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1], // 3  V
       [1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1], // 4  A
-      [0, 2, 0, 1, 0, 0, 0, 1, 1, 1, 1], // 5  L
+      [0, "ent", 0, 1, 0, 0, 0, 1, 1, 1, 1], // 5  L
       [1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1], // 6  U
       [1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1], // 7  E
       [1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1], // 8  S
@@ -124,14 +126,14 @@ let kitchen = {
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 0
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 1  X
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 2  
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2], // 3  V
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, "b"], // 3  V
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 4  A
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 5  L
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 6  U
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 7  E
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 8  S
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],  // 9
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]  // 10
+        [1, 1, 1, 1, 1, 1, 1, "ent", "ent", "ent", 1]  // 10
     ],
 
   startTileX: 9, //Sets X tile to start player on
@@ -164,7 +166,7 @@ let bathroom = {
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 2  
         [1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 2], // 3  V
         [1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1], // 4  A
-        [0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 1], // 5  L
+        [0, 0, "k", 0, 0, 0, 0, 1, 0, 0, 1], // 5  L
         [1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1], // 6  U
         [1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1], // 7  E
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 8  S
@@ -176,9 +178,47 @@ let bathroom = {
   startTileY: 5  //Sets Y tile to start player on
 }
 
+let study = {
+  graphicsMap: [
+    //         2nd VALUE (x)  
+    // 0  1  2  3  4  5  6  7  8  9, 10 
+      [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 0
+      [4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4], // 1  X
+      [4, 2, 4, 4, 4, 4, 4, 4, 4, 2, 4], // 2  
+      [4, 2, 0, 0, 0, 0, 0, 0, 0, 2, 4], // 3  V
+      [4, 2, 0, 0, 0, 1, 0, 0, 0, 2, 4], // 4  A
+      [4, 2, 0, 0, 1, 1, 1, 0, 0, 3, 4], // 5  L
+      [4, 2, 0, 0, 1, 1, 1, 0, 0, 2, 4], // 6  U
+      [4, 2, 0, 0, 0, 0, 0, 0, 0, 2, 4], // 7  E
+      [4, 2, 0, 0, 0, 0, 0, 0, 0, 2, 4], // 8  S
+      [4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4],  // 9
+      [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]  // 10
+    ],
+  
+    tileRules: [
+    //         2nd VALUE (x)  
+    //   0  1  2  3  4  5  6  7  8  9, 10
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 0
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 1  X
+        [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1], // 2  
+        [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1], // 3  V
+        [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1], // 4  A
+        [0, 1, 0, 0, 0, 0, 0, 0, 0, "ent", 1], // 5  L
+        [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1], // 6  U
+        [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1], // 7  E
+        [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1], // 8  S
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],  // 9
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]  // 10
+    ],
+
+  startTileX: 8, //Sets X tile to start player on
+  startTileY: 5  //Sets Y tile to start player on
+}
+
 //// LEVEL CONTROL VARIABLES
-let levels = [entrance, livingRoom, kitchen, bathroom];
-let currentLevel = 0;
+let rooms = [entrance, livingRoom, kitchen, bathroom, study];
+let currentRoom = 0;
+let previousRoom = 0;
 let graphicsMap;
 let tileRules;
 let count;
@@ -196,8 +236,8 @@ function setup() {
 }
 
 function loadLevel() {
-  graphicsMap = levels[currentLevel].graphicsMap;
-  tileRules = levels[currentLevel].tileRules;
+  graphicsMap = rooms[currentRoom].graphicsMap;
+  tileRules = rooms[currentRoom].tileRules;
 
   let tileID = 0; // initialises the tile IDs to 0 so that it can increment each time one is created
 
@@ -210,7 +250,7 @@ function loadLevel() {
       let texture = graphicsMap[tileY][tileX];
 
       tileMap[tileX][tileY] = new Tile(textures[texture], tileX, tileY, tileSize, tileID); // creates new tile
-
+      
       tileID++;
     }
   }
@@ -233,7 +273,6 @@ function preload() {
 
   // player
   playerSprite = loadImage("images/character.png");
-
 }
 
 function draw() {
@@ -393,7 +432,6 @@ class Player {
       this.dirY = 0;
     }
 
-
     // calculate position of current tile
     this.tileX = Math.floor(this.xPos / this.tileSize);
     this.tileY = Math.floor(this.yPos / this.tileSize);
@@ -408,12 +446,11 @@ class Player {
         nextTileY >= 0 && // top bound
         nextTileY < tilesY) { // bottom bound
 
-          if (tileRules[nextTileY][nextTileX] === 2) {
-            currentLevel++;
+          if (tileRules[nextTileY][nextTileX] === "ent") {
+            previousRoom = currentRoom;
+            currentRoom = 0;
 
-            if (currentLevel >= levels.length) currentLevel = 0;
-
-            // loads the next level in our levels array
+            // loads the next level 
             loadLevel();
 
             // sets the players start position
@@ -421,6 +458,59 @@ class Player {
             count = 0;
             this.transition = true;
           }
+
+          else if (tileRules[nextTileY][nextTileX] === "lr") {
+            previousRoom = currentRoom;
+            currentRoom = 1;
+
+            // loads the next rooms 
+            loadLevel();
+
+            // sets the players start position
+            this.setPlayerPosition();
+            count = 0;
+            this.transition = true;
+          }
+
+          else if (tileRules[nextTileY][nextTileX] === "k") {
+            previousRoom = currentRoom;
+            currentRoom = 2;
+
+            // loads the next rooms 
+            loadLevel();
+
+            // sets the players start position
+            this.setPlayerPosition();
+            count = 0;
+            this.transition = true;
+          }
+
+          else if (tileRules[nextTileY][nextTileX] === "b") {
+            previousRoom = currentRoom;
+            currentRoom = 3;
+
+            // loads the next rooms
+            loadLevel();
+
+            // sets the players start position
+            this.setPlayerPosition();
+            count = 0;
+            this.transition = true;
+          }
+
+          else if (tileRules[nextTileY][nextTileX] === "s") {
+            previousRoom = currentRoom;
+            currentRoom = 4;
+
+            // loads the next rooms
+            loadLevel();
+
+            // sets the players start position
+            this.setPlayerPosition();
+            count = 0;
+            this.transition = true;
+          }
+          
           // check if the next tile is walkable or not
           else if (tileRules[nextTileY][nextTileX] != 1) { // if it's not (!=) the tile you can't walk on
             // set tx and ty
@@ -450,10 +540,10 @@ class Player {
   }
 
   setPlayerPosition() {
-    this.tileX = levels[currentLevel].startTileX;
-    this.tileY = levels[currentLevel].startTileY;
-    this.xPos = levels[currentLevel].startTileX * tileSize;
-    this.yPos = levels[currentLevel].startTileY * tileSize;
+    this.tileX = rooms[currentRoom].startTileX;
+    this.tileY = rooms[currentRoom].startTileY;
+    this.xPos = rooms[currentRoom].startTileX * tileSize;
+    this.yPos = rooms[currentRoom].startTileY * tileSize;
     //this.dirX = 0;
     //this.dirY = 0;
   }
