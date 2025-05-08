@@ -236,11 +236,43 @@ function setup() {
 }
 
 function loadLevel() {
+  // enterance
+  if (currentRoom === 0 && previousRoom === 0) {
+    rooms[currentRoom].startTileX = 5;
+    rooms[currentRoom].startTileY = 9;
+  } else if (currentRoom === 0 && previousRoom === 1) {
+    rooms[currentRoom].startTileX = 6;
+    rooms[currentRoom].startTileY = 5;
+  } else if (currentRoom === 0 && previousRoom === 2) {
+    rooms[currentRoom].startTileX = 5;
+    rooms[currentRoom].startTileY = 1;
+  } else if (currentRoom === 0 && previousRoom === 4) {
+    rooms[currentRoom].startTileX = 4;
+    rooms[currentRoom].startTileY = 5;
+  } 
+  // living room
+  else if (currentRoom === 1 && previousRoom === 0) {
+    rooms[currentRoom].startTileX = 2;
+    rooms[currentRoom].startTileY = 5;
+  } 
+  // kitchen
+  else if (currentRoom === 2 && previousRoom === 0) {
+    rooms[currentRoom].startTileX = 8;
+    rooms[currentRoom].startTileY = 9;
+  } else if (currentRoom === 2 && previousRoom === 3) {
+    rooms[currentRoom].startTileX = 9;
+    rooms[currentRoom].startTileY = 3;
+  }
+  // study
+  else if (currentRoom === 4 && previousRoom === 0) {
+    rooms[currentRoom].startTileX = 8;
+    rooms[currentRoom].startTileY = 5;
+  } 
+
   graphicsMap = rooms[currentRoom].graphicsMap;
   tileRules = rooms[currentRoom].tileRules;
 
   let tileID = 0; // initialises the tile IDs to 0 so that it can increment each time one is created
-
 
   // creates tiles
   for (let tileX = 0; tileX < tilesX; tileX++) { // from the first tile to the last tile on the first row (tiles 1 to 10)
@@ -253,6 +285,12 @@ function loadLevel() {
       
       tileID++;
     }
+  }
+
+  if (player) { // if the player has been created
+    player.setPlayerPosition();
+  } else {
+    player = new Player(playerSprite, rooms[currentRoom].startTileX, rooms[currentRoom].startTileY, tileSize, tileRules);
   }
 
   ////GRID FOR INVENTOYR
@@ -284,9 +322,7 @@ if (gameState  == 0) {
   background(0);
   textAlign(CENTER);
   text('main menu', width/2, height/2);
-}
-
-else if (gameState == 1) {
+} else if (gameState == 1) {
   background(0);
   // loops through all tiles each time draw() is called
   for (let tileX = 0; tileX < tilesX; tileX++) {
@@ -333,9 +369,7 @@ else if (gameState == 1) {
   }
 
   rect(112, 667, player.sanity/16.67 - 4, 26);
-}
-
-else if (gameState == 2) {
+} else if (gameState == 2) {
   background(0);
   textSize(50);
   fill(255);
@@ -457,9 +491,7 @@ class Player {
             this.setPlayerPosition();
             count = 0;
             this.transition = true;
-          }
-
-          else if (tileRules[nextTileY][nextTileX] === "lr") {
+          } else if (tileRules[nextTileY][nextTileX] === "lr") {
             previousRoom = currentRoom;
             currentRoom = 1;
 
@@ -470,9 +502,7 @@ class Player {
             this.setPlayerPosition();
             count = 0;
             this.transition = true;
-          }
-
-          else if (tileRules[nextTileY][nextTileX] === "k") {
+          } else if (tileRules[nextTileY][nextTileX] === "k") {
             previousRoom = currentRoom;
             currentRoom = 2;
 
@@ -483,9 +513,7 @@ class Player {
             this.setPlayerPosition();
             count = 0;
             this.transition = true;
-          }
-
-          else if (tileRules[nextTileY][nextTileX] === "b") {
+          } else if (tileRules[nextTileY][nextTileX] === "b") {
             previousRoom = currentRoom;
             currentRoom = 3;
 
@@ -496,9 +524,7 @@ class Player {
             this.setPlayerPosition();
             count = 0;
             this.transition = true;
-          }
-
-          else if (tileRules[nextTileY][nextTileX] === "s") {
+          } else if (tileRules[nextTileY][nextTileX] === "s") {
             previousRoom = currentRoom;
             currentRoom = 4;
 
@@ -510,7 +536,6 @@ class Player {
             count = 0;
             this.transition = true;
           }
-          
           // check if the next tile is walkable or not
           else if (tileRules[nextTileY][nextTileX] != 1) { // if it's not (!=) the tile you can't walk on
             // set tx and ty
