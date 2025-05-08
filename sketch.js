@@ -11,11 +11,9 @@ let tilesY = 11; // a variable to store the amount of rows in the tile map
 let tileSize = 60; // a variable to store the amount of pixels in each tile
 let textures = [];
 
-
-
 // items and inventory
-let inventory = [];
-let hasLocket = false;
+let invX = 670; // position to start where to draw the inventory
+let invY = 0; // position to start where to draw the inventory
 
 // game state
 let gameState = 1;
@@ -69,17 +67,17 @@ let livingRoom = {
   graphicsMap: [
   //         2nd VALUE (x)  
   // 0  1  2  3  4  5  6  7  8  9, 10 
-    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 0
-    [4, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4], // 1  X
-    [4, 2, 0, 0, 1, 1, 0, 0, 2, 4, 4], // 2  
-    [4, 2, 0, 0, 0, 0, 0, 0, 2, 4, 4], // 3  V
-    [4, 2, 0, 1, 0, 0, 0, 2, 2, 4, 4], // 4  A
-    [4, 3, 0, 1, 0, 0, 0, 2, 2, 4, 4], // 5  L
-    [4, 2, 0, 1, 0, 0, 0, 2, 2, 4, 4], // 6  U
-    [4, 2, 0, 0, 0, 0, 0, 0, 2, 4, 4], // 7  E
-    [4, 2, 0, 0, 1, 0, 0, 0, 2, 4, 4], // 8  S
-    [4, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4],  // 9
-    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]  // 10
+    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, ], // 0
+    [4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 4, ], // 1  X
+    [4, 4, 2, 0, 0, 1, 1, 0, 0, 2, 4, ], // 2  
+    [4, 4, 2, 0, 0, 0, 0, 0, 0, 2, 4, ], // 3  V
+    [4, 4, 2, 0, 1, 0, 0, 0, 2, 2, 4, ], // 4  A
+    [4, 4, 3, 0, 1, 0, 0, 0, 2, 2, 4, ], // 5  L
+    [4, 4, 2, 0, 1, 0, 0, 0, 2, 2, 4, ], // 6  U
+    [4, 4, 2, 0, 0, 0, 0, 0, 0, 2, 4, ], // 7  E
+    [4, 4, 2, 0, 0, 1, 0, 0, 0, 2, 4, ], // 8  S
+    [4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 4, ],  // 9
+    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, ]  // 10
   ],
 
   tileRules: [
@@ -87,19 +85,19 @@ let livingRoom = {
   //   0  1  2  3  4  5  6  7  8  9, 10
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 0
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 1  X
-      [1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1], // 2  
-      [1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1], // 3  V
-      [1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1], // 4  A
-      [0, "ent", 0, 1, 0, 0, 0, 1, 1, 1, 1], // 5  L
-      [1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1], // 6  U
-      [1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1], // 7  E
-      [1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1], // 8  S
+      [1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1], // 2  
+      [1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1], // 3  V
+      [1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1], // 4  A
+      [1, 0, "ent", 0, 1, 0, 0, 0, 1, 1, 1], // 5  L
+      [1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1], // 6  U
+      [1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1], // 7  E
+      [1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1], // 8  S
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],  // 9
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]  // 10
   ],
 
-  startTileX: 2, //Sets X tile to start player on
-  startTileY: 5  //Sets Y tile to start player on
+  startTileX: 3, //Sets X tile to start player on
+  startTileY: 6  //Sets Y tile to start player on
 }
 
 let kitchen = {
@@ -148,11 +146,11 @@ let bathroom = {
       [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 0
       [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 1  X
       [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 2  
-      [4, 4, 2, 2, 2, 2, 2, 2, 4, 4, 4], // 3  V
-      [4, 4, 2, 4, 4, 4, 1, 2, 4, 4, 4], // 4  A
-      [4, 4, 3, 0, 0, 0, 0, 2, 4, 4, 4], // 5  L
-      [4, 4, 2, 0, 1, 1, 0, 2, 4, 4, 4], // 6  U
-      [4, 4, 2, 2, 2, 2, 2, 2, 4, 4, 4], // 7  E
+      [4, 4, 4, 2, 2, 2, 2, 2, 2, 4, 4], // 3  V
+      [4, 4, 4, 2, 4, 4, 4, 1, 2, 4, 4], // 4  A
+      [4, 4, 4, 3, 0, 0, 0, 0, 2, 4, 4], // 5  L
+      [4, 4, 4, 2, 0, 1, 1, 0, 2, 4, 4], // 6  U
+      [4, 4, 4, 2, 2, 2, 2, 2, 2, 4, 4], // 7  E
       [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 8  S
       [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],  // 9
       [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]  // 10
@@ -162,19 +160,19 @@ let bathroom = {
     //         2nd VALUE (x)  
     //   0  1  2  3  4  5  6  7  8  9, 10
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 0
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 1  X
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 2  
-        [1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 2], // 3  V
-        [1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1], // 4  A
-        [0, 0, "k", 0, 0, 0, 0, 1, 0, 0, 1], // 5  L
-        [1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1], // 6  U
-        [1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1], // 7  E
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 8  S
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],  // 9
+        [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 1  X
+        [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0], // 2  
+        [1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0], // 3  V
+        [1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0], // 4  A
+        [0, 1, 1, "k", 0, 0, 0, 0, 1, 0, 1], // 5  L
+        [1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0], // 6  U
+        [1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0], // 7  E
+        [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 8  S
+        [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],  // 9
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]  // 10
     ],
 
-  startTileX: 3, //Sets X tile to start player on
+  startTileX: 4, //Sets X tile to start player on
   startTileY: 5  //Sets Y tile to start player on
 }
 
@@ -225,7 +223,7 @@ let count;
 let countMax = 30;
 
 function setup() {
-  createCanvas(720, 700); // creates a canvas big enough for the tile map
+  createCanvas(740, 700); // creates a canvas big enough for the tile map
 
   loadLevel();
 
@@ -233,6 +231,8 @@ function setup() {
 
   // create player
   player = new Player(playerSprite, 5, 9, tileSize, tileRules);
+  // create inventory
+  player.inventory = new Inventory(11);
 }
 
 function loadLevel() {
@@ -252,7 +252,7 @@ function loadLevel() {
   } 
   // living room
   else if (currentRoom === 1 && previousRoom === 0) {
-    rooms[currentRoom].startTileX = 2;
+    rooms[currentRoom].startTileX = 3;
     rooms[currentRoom].startTileY = 5;
   } 
   // kitchen
@@ -292,13 +292,6 @@ function loadLevel() {
   } else {
     player = new Player(playerSprite, rooms[currentRoom].startTileX, rooms[currentRoom].startTileY, tileSize, tileRules);
   }
-
-  ////GRID FOR INVENTOYR
-  //for (let tileY = 0; tileY < tilesY; tileY++) {
-    // load item images
-
-
-  //}
 }
 
 function preload() {
@@ -336,6 +329,7 @@ if (gameState  == 0) {
   player.setDirection();
   player.move();
   player.updateSanity();
+  player.inventory.display(invX, invY, tileSize);
 
   if (player.transition) {
     if (count === countMax) player.transition = false;
@@ -349,12 +343,12 @@ if (gameState  == 0) {
   stroke(0);
   strokeWeight(3);
   fill(200);
-  rect(110, 665, 600, 30);
+  rect(125, 665, 600, 30);
   strokeWeight(0);
   fill(255, 255, 0);
   textSize(25);
   textAlign(LEFT);
-  text('SANITY:', 5, 687);
+  text('SANITY:', 15, 687);
   
   if (player.sanity >= 50 && player.sanity <= 10000) {
     fill(0, 255, 0); 
@@ -368,7 +362,7 @@ if (gameState  == 0) {
     fill(255, 0, 0);
   }
 
-  rect(112, 667, player.sanity/16.67 - 4, 26);
+  rect(127, 667, player.sanity/16.67 - 4, 26);
 } else if (gameState == 2) {
   background(0);
   textSize(50);
@@ -376,6 +370,7 @@ if (gameState  == 0) {
   textAlign(CENTER);
   text('game over', width/2, height/2);
 }
+
 }
 
 class Player {
@@ -589,8 +584,24 @@ class Inventory {
     //code to remove item after it is used
   }
 
-  display() {
-    //displays item in grid
+  display(x, y, size) {
+  //// GRID FOR INVENTORY
+    for (let i = 0; i < tilesY; i++) {
+      // draw grid
+      let x = invX;
+      let y = invY + i * tileSize;
+      strokeWeight(1);
+      stroke(255);
+      noFill();
+      rect(x, y, tileSize, tileSize);
+
+      // number each box
+      fill(255);
+      noStroke();
+      textSize(10);
+      textAlign(LEFT);
+      text(i + 1, x + 5, y + 15); // adds padding and increments number
+    }
   }
 }
 
