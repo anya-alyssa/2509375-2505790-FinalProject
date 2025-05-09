@@ -15,6 +15,27 @@ let textures = [];
 let invX = 670; // position to start where to draw the inventory
 let invY = 0; // position to start where to draw the inventory
 
+let allItems = {
+  Locket: {
+    name: "Locket",
+    img: null,
+    isEquipped: false,
+    opacity: 100
+  },
+  Code: {
+    name: "Crumpled Paper",
+    img: null,
+    isEquipped: false,
+    opacity: 100
+  },
+  Key: {
+    name: "Rusty Key",
+    img: null,
+    isEquipped: false,
+    opacity: 100
+  }
+}
+
 // game state
 let gameState = 1;
 
@@ -231,6 +252,7 @@ function setup() {
 
   // create player
   player = new Player(playerSprite, 5, 9, tileSize, tileRules);
+
   // create inventory
   player.inventory = new Inventory(11);
 }
@@ -304,6 +326,9 @@ function preload() {
 
   // player
   playerSprite = loadImage("images/character.png");
+
+  // items 
+  allItems.Locket.img = loadImage("images/locket.jpg");
 }
 
 function draw() {
@@ -321,7 +346,7 @@ if (gameState  == 0) {
   for (let tileX = 0; tileX < tilesX; tileX++) {
     for (let tileY = 0; tileY < tilesY; tileY++) {
       tileMap[tileX][tileY].display();
-      //tileMap[tileX][tileY].debugGrid(); // runs debug() for each tile
+      // tileMap[tileX][tileY].debugGrid(); // runs debug() for each tile
     }
   }  
 
@@ -335,9 +360,6 @@ if (gameState  == 0) {
     if (count === countMax) player.transition = false;
     else count++;
   }
-
-  // sanity bar
-
 
   // display sanity bar
   stroke(0);
@@ -373,6 +395,25 @@ if (gameState  == 0) {
 
 }
 
+function keyPressed() {
+  if (keyCode === 76 && player.isMoving == false) { // if player clicks L and if they are stil
+    if (player.inventory.items[10]) {
+      player.inventory.items[10].isEquipped = !player.inventory.items[10].isEquipped; // toggles it
+      if (player.inventory.items[10].isEquipped == true) {
+        player.inventory.items[10].opacity = 255;
+      } else {
+        player.inventory.items[10].opacity = 100;
+      }
+    }
+  } 
+  if (keyCode === 87 || keyCode === 83 || keyCode === 65 || keyCode === 68) {
+    if (player.inventory.items[10]) {
+      player.inventory.items[10].isEquipped = false;
+      player.inventory.items[10].opacity = 100;
+    }
+  }
+}
+
 class Player {
   constructor(sprite, startX, startY, tileSize, tileRules) {
     // player sprites
@@ -405,18 +446,20 @@ class Player {
 
     // sanity
     this.sanity = 10000;
-
-    // inventory
-    this.inventory = new Inventory(11);
   }
 
   updateSanity() {
-    if (this.sanity > 0 && hasLocket == false) {
+    if (this.inventory.items[10].isEquipped == true && this.isMoving == false) {
+      this.sanity = this.sanity + 1;
+      if (this.sanity > 10000) {
+        this.sanity = 10000; // cannot go over 10000
+      }
+    } else if (this.sanity > 0) {
       this.sanity = this.sanity - 1;
     } else if (this.sanity == 0) {
       gameState = 2;
-    }
-    }
+    } 
+  }
   
 
   display() {
@@ -573,15 +616,32 @@ class Player {
 class Inventory {
   constructor(size = 11) {
     this.size = size;
-    this.items = [];
+    this.items = [null, null, null, null, null, null, null, null, null, null, null];
+    this.items[10] = allItems.Locket; // the last slot must be the locket 
   }
 
-  addItem() {
-    //code to add an item
+  addItem(item) {
+    // finds first empty slot
+    for (let i = 0; i < this.size; i++) {
+      if (this.items[i] === null) {
+        this.items[i] = item; // adds the item
+        return true;
+        // shows on screen that you added an item "you picked up a locket"
+      } 
+    } 
+    return false;
+    // shwos that invenotyr is full
   }
 
-  removeItem() {
-    //code to remove item after it is used
+  removeItem(slot) {
+    if (slot >= 0 && slot < this.items.length) { 
+      if (this.items[slot] && this.items[slot].name === "Locket") {
+        // say you cannot drop this item
+      } else {
+        this.items[slot] = null;
+        // item appears on the floor next to character
+      }
+    }
   }
 
   display(x, y, size) {
@@ -595,12 +655,31 @@ class Inventory {
       noFill();
       rect(x, y, tileSize, tileSize);
 
+      //display items
+      if (this.items[i]) {
+        if (this.items[i].img) {
+          tint(255, this.items[i].opacity);
+          image(this.items[i].img, x + 2, y + 2, size - 5, size - 5);
+          noTint();
+        } else {
+          fill(255);
+          textSize(10);
+          noStroke();
+          textAlign(CENTER);
+          text(this.items[i].name, x + 30, y + 35);
+        }
+      }
+
       // number each box
       fill(255);
       noStroke();
       textSize(10);
       textAlign(LEFT);
-      text(i + 1, x + 5, y + 15); // adds padding and increments number
+      if (i !== 10) {
+        text(i + 1, x + 5, y + 15); // adds padding and increments number
+      } else {
+        text("L", x + 5, y + 15); // adds padding and puts L for locket space in the inventory
+      }
     }
   }
 }
