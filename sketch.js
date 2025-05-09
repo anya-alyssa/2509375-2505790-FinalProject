@@ -88,17 +88,17 @@ let livingRoom = {
   graphicsMap: [
   //         2nd VALUE (x)  
   // 0  1  2  3  4  5  6  7  8  9, 10 
-    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, ], // 0
-    [4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 4, ], // 1  X
-    [4, 4, 2, 0, 0, 1, 1, 0, 0, 2, 4, ], // 2  
-    [4, 4, 2, 0, 0, 0, 0, 0, 0, 2, 4, ], // 3  V
-    [4, 4, 2, 0, 1, 0, 0, 0, 2, 2, 4, ], // 4  A
-    [4, 4, 3, 0, 1, 0, 0, 0, 2, 2, 4, ], // 5  L
-    [4, 4, 2, 0, 1, 0, 0, 0, 2, 2, 4, ], // 6  U
-    [4, 4, 2, 0, 0, 0, 0, 0, 0, 2, 4, ], // 7  E
-    [4, 4, 2, 0, 0, 1, 0, 0, 0, 2, 4, ], // 8  S
-    [4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 4, ],  // 9
-    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, ]  // 10
+    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 0
+    [4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 4], // 1  X
+    [4, 4, 2, 0, 0, 1, 1, 0, 0, 2, 4], // 2  
+    [4, 4, 2, 0, 0, 0, 0, 0, 0, 2, 4], // 3  V
+    [4, 4, 2, 0, 1, 0, 0, 0, 2, 2, 4], // 4  A
+    [4, 4, 3, 0, 1, 0, 0, 0, 2, 2, 4], // 5  L
+    [4, 4, 2, 0, 1, 0, 0, 0, 2, 2, 4], // 6  U
+    [4, 4, 2, 0, 0, 0, 0, 0, 0, 2, 4], // 7  E
+    [4, 4, 2, 0, 0, 1, 0, 0, 0, 2, 4], // 8  S
+    [4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 4],  // 9
+    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]  // 10
   ],
 
   tileRules: [
@@ -150,8 +150,8 @@ let kitchen = {
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 5  L
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 6  U
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 7  E
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 8  S
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],  // 9
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, "l"], // 8  S
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, "l"],  // 9
         [1, 1, 1, 1, 1, 1, 1, "ent", "ent", "ent", 1]  // 10
     ],
 
@@ -234,8 +234,134 @@ let study = {
   startTileY: 5  //Sets Y tile to start player on
 }
 
+let landing = {
+   graphicsMap: [
+  //    Y    V  A  L  U  E  S
+  // 0  1  2  3  4  5  6  7  8  9  10
+    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 0
+    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 1  X
+    [4, 4, 4, 2, 2, 2, 2, 2, 4, 4, 4], // 2  
+    [4, 4, 4, 2, 0, 0, 0, 4, 4, 4, 4], // 3  V
+    [4, 4, 4, 2, 0, 0, 0, 4, 4, 4, 4], // 4  A
+    [4, 4, 4, 3, 0, 0, 0, 2, 4, 4, 4], // 5  L
+    [4, 4, 4, 2, 0, 0, 0, 2, 4, 4, 4], // 6  U
+    [4, 4, 4, 2, 0, 0, 0, 2, 4, 4, 4], // 7  E
+    [4, 4, 4, 2, 2, 3, 2, 2, 4, 4, 4], // 8  S
+    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],  // 9
+    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]  // 10
+  ],
+
+   tileRules: [
+  //    Y    V  A  L  U  E  S
+  // 0  1  2  3  4  5  6  7  8  9, 10
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 0
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 1  X
+    [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0], // 2  
+    [0, 0, 0, 1, 0, 0, 0, "k", 0, 0, 0], // 3  V
+    [0, 0, 0, 1, 0, 0, 0, "k", 0, 0, 0], // 4  A
+    [0, 0, 1, "gb", 0, 0, 0, 1, 0, 0, 0], // 5  L
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 6  U
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 7  E
+    [0, 0, 0, 1, 1, "mb", 1, 1, 0, 0, 0], // 8  S
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],  // 9
+    [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0]  // 10
+  ],
+  //// RULES
+  // 0 = free to walk on
+  // 1 = obstacle/can't walk on
+  // 2 = transition tile
+
+  startTileX: 6,
+  startTileY: 3 // starttiles for the player
+
+}
+
+let ghostBedroom = {
+   graphicsMap: [
+  //    Y    V  A  L  U  E  S
+  // 0  1  2  3  4  5  6  7  8  9  10
+    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 0
+    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 1  X
+    [4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 4], // 2  
+    [4, 4, 2, 0, 1, 4, 4, 1, 0, 2, 4], // 3  V
+    [4, 4, 2, 0, 0, 4, 4, 0, 0, 2, 4], // 4  A
+    [4, 4, 2, 1, 0, 0, 0, 0, 0, 3, 4], // 5  L
+    [4, 4, 2, 1, 0, 0, 0, 0, 0, 2, 4], // 6  U
+    [4, 4, 2, 0, 0, 0, 0, 1, 1, 2, 4], // 7  E
+    [4, 4, 2, 2, 3, 2, 2, 2, 2, 2, 4], // 8  S
+    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],  // 9
+    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]  // 10
+  ],
+
+   tileRules: [
+  //    Y    V  A  L  U  E  S
+  // 0  1  2  3  4  5  6  7  8  9, 10
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 0
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 1  X
+    [0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0], // 2  
+    [0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0], // 3  V
+    [0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0], // 4  A
+    [0, 0, 1, 0, 0, 0, 0, 0, 0, "l", 0], // 5  L
+    [0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0], // 6  U
+    [0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0], // 7  E
+    [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0], // 8  S
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],  // 9
+    [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0]  // 10
+  ],
+  //// RULES
+  // 0 = free to walk on
+  // 1 = obstacle/can't walk on
+  // 2 = transition tile
+
+  startTileX: 8,
+  startTileY: 5 // starttiles for the player
+
+}
+
+let masterBedroom = {
+   graphicsMap: [
+  //    Y    V  A  L  U  E  S
+  // 0  1  2  3  4  5  6  7  8  9  10
+    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 0
+    [4, 4, 2, 2, 2, 3, 2, 2, 2, 4, 4], // 1  X
+    [4, 4, 2, 0, 0, 0, 0, 1, 2, 4, 4], // 2  
+    [4, 4, 2, 1, 0, 0, 0, 1, 2, 4, 4], // 3  V
+    [4, 4, 2, 4, 4, 0, 0, 0, 2, 4, 4], // 4  A
+    [4, 4, 2, 4, 4, 0, 0, 1, 2, 4, 4], // 5  L
+    [4, 4, 2, 1, 0, 0, 0, 1, 2, 4, 4], // 6  U
+    [4, 4, 2, 0, 0, 0, 0, 1, 2, 4, 4], // 7  E
+    [4, 4, 2, 2, 2, 2, 2, 2, 2, 4, 4], // 8  S
+    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],  // 9
+    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]  // 10
+  ],
+
+   tileRules: [
+  //    Y    V  A  L  U  E  S
+  // 0  1  2  3  4  5  6  7  8  9, 10
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 0
+    [0, 0, 1, 1, 1, "l", 1, 1, 1, 1, 0], // 1  X
+    [0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0], // 2  
+    [0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0], // 3  V
+    [0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0], // 4  A
+    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0], // 5  L
+    [0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0], // 6  U
+    [0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0], // 7  E
+    [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0], // 8  S
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],  // 9
+    [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0]  // 10
+  ],
+  //// RULES
+  // 0 = free to walk on
+  // 1 = obstacle/can't walk on
+  // 2 = transition tile
+
+  startTileX: 8,
+  startTileY: 5 // starttiles for the player
+
+}
+
 //// LEVEL CONTROL VARIABLES
-let rooms = [entrance, livingRoom, kitchen, bathroom, study];
+let rooms = [entrance, livingRoom, kitchen, bathroom, study, landing, ghostBedroom, masterBedroom];
 let currentRoom = 0;
 let previousRoom = 0;
 let graphicsMap;
@@ -284,11 +410,35 @@ function loadLevel() {
   } else if (currentRoom === 2 && previousRoom === 3) {
     rooms[currentRoom].startTileX = 9;
     rooms[currentRoom].startTileY = 3;
-  }
+  } else if (currentRoom === 2 && previousRoom === 5) {
+    rooms[currentRoom].startTileX = 9;
+    rooms[currentRoom].startTileY = 9;
+  } 
   // study
   else if (currentRoom === 4 && previousRoom === 0) {
     rooms[currentRoom].startTileX = 8;
     rooms[currentRoom].startTileY = 5;
+  } 
+  // landing
+  else if (currentRoom === 5 && previousRoom === 2) {
+    rooms[currentRoom].startTileX = 6;
+    rooms[currentRoom].startTileY = 3;
+  } else if (currentRoom === 5 && previousRoom === 6) {
+    rooms[currentRoom].startTileX = 4;
+    rooms[currentRoom].startTileY = 5;
+  } else if (currentRoom === 5 && previousRoom === 7) {
+    rooms[currentRoom].startTileX = 5;
+    rooms[currentRoom].startTileY = 7;
+  } 
+  // ghost bedroom
+  else if (currentRoom === 6 && previousRoom === 5) {
+    rooms[currentRoom].startTileX = 8;
+    rooms[currentRoom].startTileY = 5;
+  } 
+  // master bedroom
+  else if (currentRoom === 7 && previousRoom === 5) {
+    rooms[currentRoom].startTileX = 5;
+    rooms[currentRoom].startTileY = 2;
   } 
 
   graphicsMap = rooms[currentRoom].graphicsMap;
@@ -396,7 +546,8 @@ if (gameState  == 0) {
 }
 
 function keyPressed() {
-  if (keyCode === 76 && player.isMoving == false) { // if player clicks L and if they are stil
+  // visual way to show that the item is equipped
+  if (keyCode === 76) { // if player clicks L
     if (player.inventory.items[10]) {
       player.inventory.items[10].isEquipped = !player.inventory.items[10].isEquipped; // toggles it
       if (player.inventory.items[10].isEquipped == true) {
@@ -405,7 +556,7 @@ function keyPressed() {
         player.inventory.items[10].opacity = 100;
       }
     }
-  } 
+  } // if the player is walking they cannot use the lockets ability
   if (keyCode === 87 || keyCode === 83 || keyCode === 65 || keyCode === 68) {
     if (player.inventory.items[10]) {
       player.inventory.items[10].isEquipped = false;
@@ -461,7 +612,6 @@ class Player {
     } 
   }
   
-
   display() {
     image(this.sprite, this.xPos, this.yPos, this.tileSize, this.tileSize);
 } 
@@ -529,7 +679,9 @@ class Player {
             this.setPlayerPosition();
             count = 0;
             this.transition = true;
-          } else if (tileRules[nextTileY][nextTileX] === "lr") {
+          } 
+          
+          else if (tileRules[nextTileY][nextTileX] === "lr") {
             previousRoom = currentRoom;
             currentRoom = 1;
 
@@ -540,7 +692,9 @@ class Player {
             this.setPlayerPosition();
             count = 0;
             this.transition = true;
-          } else if (tileRules[nextTileY][nextTileX] === "k") {
+          } 
+          
+          else if (tileRules[nextTileY][nextTileX] === "k") {
             previousRoom = currentRoom;
             currentRoom = 2;
 
@@ -551,7 +705,9 @@ class Player {
             this.setPlayerPosition();
             count = 0;
             this.transition = true;
-          } else if (tileRules[nextTileY][nextTileX] === "b") {
+          } 
+          
+          else if (tileRules[nextTileY][nextTileX] === "b") {
             previousRoom = currentRoom;
             currentRoom = 3;
 
@@ -562,7 +718,9 @@ class Player {
             this.setPlayerPosition();
             count = 0;
             this.transition = true;
-          } else if (tileRules[nextTileY][nextTileX] === "s") {
+          } 
+          
+          else if (tileRules[nextTileY][nextTileX] === "s") {
             previousRoom = currentRoom;
             currentRoom = 4;
 
@@ -574,6 +732,46 @@ class Player {
             count = 0;
             this.transition = true;
           }
+
+          else if (tileRules[nextTileY][nextTileX] === "l") {
+            previousRoom = currentRoom;
+            currentRoom = 5;
+
+            // loads the next rooms
+            loadLevel();
+
+            // sets the players start position
+            this.setPlayerPosition();
+            count = 0;
+            this.transition = true;
+          }
+
+          else if (tileRules[nextTileY][nextTileX] === "gb") {
+            previousRoom = currentRoom;
+            currentRoom = 6;
+
+            // loads the next rooms
+            loadLevel();
+
+            // sets the players start position
+            this.setPlayerPosition();
+            count = 0;
+            this.transition = true;
+          }
+
+          else if (tileRules[nextTileY][nextTileX] === "mb") {
+            previousRoom = currentRoom;
+            currentRoom = 7;
+
+            // loads the next rooms
+            loadLevel();
+
+            // sets the players start position
+            this.setPlayerPosition();
+            count = 0;
+            this.transition = true;
+          }
+
           // check if the next tile is walkable or not
           else if (tileRules[nextTileY][nextTileX] != 1) { // if it's not (!=) the tile you can't walk on
             // set tx and ty
@@ -676,7 +874,7 @@ class Inventory {
       textSize(10);
       textAlign(LEFT);
       if (i !== 10) {
-        text(i + 1, x + 5, y + 15); // adds padding and increments number
+        text(i, x + 5, y + 15); // adds padding and increments number
       } else {
         text("L", x + 5, y + 15); // adds padding and puts L for locket space in the inventory
       }
