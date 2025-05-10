@@ -54,11 +54,23 @@ let allItems = {
   }
 }
 
+// value on tilerules for where it is hidden
+let itemTiles = {
+  3: allItems.Paper,
+  4: allItems.StudyKey,
+  5: allItems.RoomKey,
+  6: allItems.DoorKey,
+  7: allItems.Teddy
+}
+
 // game state
 let gameState = 1;
 
-//// LEVEL DATA OBJECTS
-
+////// LEVEL DATA OBJECTS
+//// RULES
+// 0 = free to walk on
+// 1 = obstacle/can't walk on
+// 2 = transition tile
 let entrance = {
    graphicsMap: [
   //    Y    V  A  L  U  E  S
@@ -91,14 +103,9 @@ let entrance = {
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],  // 9
     [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0]  // 10
   ],
-  //// RULES
-  // 0 = free to walk on
-  // 1 = obstacle/can't walk on
-  // 2 = transition tile
 
   startTileX: 6,
   startTileY: 5 // starttiles for the player
-
 }
 
 let livingRoom = {
@@ -283,10 +290,6 @@ let landing = {
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],  // 9
     [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0]  // 10
   ],
-  //// RULES
-  // 0 = free to walk on
-  // 1 = obstacle/can't walk on
-  // 2 = transition tile
 
   startTileX: 6,
   startTileY: 3 // starttiles for the player
@@ -325,10 +328,6 @@ let ghostBedroom = {
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],  // 9
     [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0]  // 10
   ],
-  //// RULES
-  // 0 = free to walk on
-  // 1 = obstacle/can't walk on
-  // 2 = transition tile
 
   startTileX: 8,
   startTileY: 5 // starttiles for the player
@@ -367,14 +366,9 @@ let masterBedroom = {
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],  // 9
     [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0]  // 10
   ],
-  //// RULES
-  // 0 = free to walk on
-  // 1 = obstacle/can't walk on
-  // 2 = transition tile
 
   startTileX: 8,
   startTileY: 5 // starttiles for the player
-
 }
 
 //// LEVEL CONTROL VARIABLES
@@ -581,6 +575,18 @@ function keyPressed() {
       player.inventory.items[10].isEquipped = false;
       player.inventory.items[10].opacity = 100;
     }
+  } // searching a tile
+  if (keyCode === 32) { // if player clicks the space bar
+    player.getNextTile(); // update the coordinates of the tile in front of the player
+
+    // checks if the next tile is in bounds of the tilemap
+    if (player.targetTileX >= 0 && // left bound
+        player.targetTileX < player.tilesX && // right bound
+        player.targetTileY >= 0 && // top bound
+        player.targetTileY < player.tilesY) { // bottom bound
+
+          // somehow find the tilevalue for that tilemap coord and then check what item has it and then pick it up make the tile empty
+        }
   }
 }
 
@@ -618,7 +624,12 @@ class Player {
     this.sanity = 10000;
   }
 
-  getNext
+  // getting the next tile coords to search for item
+  getNextTile() {
+    // check the tile in front of the player 
+    let targetTileX = this.tileX + this.dirX;
+    let targetTileY = this.tileY + this.dirY;
+  }
 
   updateSanity() {
     if (this.inventory.items[10].isEquipped == true && this.isMoving == false) {
