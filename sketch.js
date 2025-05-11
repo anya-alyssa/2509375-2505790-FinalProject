@@ -4,6 +4,12 @@ let player;
 let playerSprite;
 let playerSpeed = 5;
 
+// ghost
+let ghost;
+let ghostSprite;
+let spawnChance = 0.5; // 50% spawn cahnce
+let despawnChance = 0.75; // 75% despawn chance
+
 // INITIALISE TILEMAP VARIABLES
 let tileMap = []; // creates an empty 1 dimensional array to be developed in later code to make a tile map
 let tilesX = 11; // a variable to store the amount of columns in the tile map
@@ -368,8 +374,8 @@ let ghostBedroom = {
     [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0]  // 10
   ],
 
-  startTileX: 8,
-  startTileY: 5 // starttiles for the player
+  startTileX: 5,
+  startTileY: 3 // starttiles for the player
 
 }
 
@@ -566,6 +572,12 @@ function loadLevel() {
   } else {
     player = new Player(playerSprite, rooms[currentRoom].startTileX, rooms[currentRoom].startTileY, tileSize, tileRules);
   }
+
+  if (ghost == null && random(0, 1) < spawnChance) {
+    ghost = new Ghost(ghostSprite, 5, 5, tileSize, graphicsMap);
+  } else if (ghost && random(0, 1) < despawnChance) {
+    ghost = null;
+  }
 }
 
 function preload() {
@@ -579,6 +591,9 @@ function preload() {
 
   // player
   playerSprite = loadImage("images/character.png");
+
+  // ghost
+  ghostSprite = loadImage("images/librarian-pink.png");
 
   // items 
   allItems.Locket.img = loadImage("images/locket.jpg");
@@ -616,6 +631,13 @@ if (gameState == 0) {
   player.move();
   player.updateSanity();
   player.inventory.display(invX, invY, tileSize);
+
+  if (ghost) { // only do all of these if there is one in the room
+    ghost.display();
+    ghost.chase();
+    ghost.move();
+    ghost.checkAlert();
+  }
 
   if (player.transition) {
     if (count === countMax) player.transition = false;
@@ -862,7 +884,6 @@ if (gameState === 1) { // doesnt interfere wuth other gamststes
 }
 }
 
-
 class Player {
   constructor(sprite, startX, startY, tileSize, tileRules) {
     // player sprites
@@ -904,13 +925,15 @@ class Player {
   }
 
   updateSanity() {
-    if (this.inventory.items[10].isEquipped == true && this.isMoving == false) {
+    if (this.inventory.items[10].isEquipped == true && this.isMoving == false && ghost.alert == false) {
       this.sanity = this.sanity + 1;
       if (this.sanity > 10000) {
         this.sanity = 10000; // cannot go over 10000
       }
-    } else if (this.sanity > 0) {
+    } else if (this.sanity > 0 && ghost.alert == false) {
       this.sanity = this.sanity - 1;
+    } else if (this.sanity > 0 && ghost.alert == true) {
+      this.sanity = this.sanity - 5;
     } else if (this.sanity == 0) {
       gameState = 2;
     } 
@@ -1039,6 +1062,11 @@ class Player {
             // loads the next rooms
             loadLevel();
 
+            // cant be in the bathroom because its too small
+            if (ghost) {
+              ghost = null;
+            }
+
             // sets the players start position
             this.setPlayerPosition();
             count = 0;
@@ -1120,7 +1148,7 @@ class Player {
               // sets the players start position
               this.setPlayerPosition();
               count = 0;
-              this.transition = true;
+              this.transition = true;              
 
               // unlock room and remove key
               gbOpened = true; 
@@ -1155,6 +1183,11 @@ class Player {
               // loads the next room
               loadLevel();
 
+              // cannot be in parents room
+              if (ghost) {
+                ghost = null;
+              }
+
               // sets the players start position
               this.setPlayerPosition();
               count = 0;
@@ -1177,6 +1210,11 @@ class Player {
               // loads the next rooms
               loadLevel();
 
+              // cannot be in parents room
+              if (ghost) {
+                ghost = null;
+              }
+
               // sets the players start position
               this.setPlayerPosition();
               count = 0;
@@ -1190,8 +1228,14 @@ class Player {
             if (itemInUse === "Book") {
               previousRoom = currentRoom;
               currentRoom = 8;
+
               // loads the next room
               loadLevel();
+
+              // afraid of secret room
+              if (ghost) {
+                ghost = null;
+              }
 
               // sets the players start position
               this.setPlayerPosition();
@@ -1214,6 +1258,11 @@ class Player {
 
               // loads the next rooms
               loadLevel();
+
+              // afraid of secret room
+              if (ghost) {
+                ghost = null;
+              }
 
               // sets the players start position
               this.setPlayerPosition();
@@ -1387,4 +1436,111 @@ class Tile {
     noStroke();
     image(this.texture, this.xPos, this.yPos, this.tileSize, this.tileSize);
   }
+}
+
+
+// enemy code from git repository with minor adjustments
+class Ghost {
+    constructor(sprite, tileX, tileY, tileSize, graphicsMap) {
+        //Sprites
+        this.sprite = sprite;
+
+        //Position
+        this.tileX = tileX;
+        this.tileY = tileY;
+        this.xPos = tileX * tileSize;
+        this.yPos = tileY * tileSize;
+
+        //Info
+        this.tileSize = tileSize;
+        this.graphicsMap = graphicsMap;
+
+        //Movement
+        this.tx = tileX;
+        this.ty = tileY;
+        this.isMoving = false;
+        this.speed = 1.5;
+        this.dirX = 0;
+        this.dirY = 0;
+
+        //Target Player
+        this.alert = false;
+    }
+
+    display() {
+        image(this.sprite, this.xPos, this.yPos, this.tileSize, this.tileSize)
+    }
+
+    checkAlert() {
+        //Calculate tile position of currentTile
+        this.tileX = Math.floor(this.xPos / this.tileSize);
+        this.tileY = Math.floor(this.yPos / this.tileSize);
+
+        if (dist(this.tileX, this.tileY, player.tileX, player.tileY) < 5) { //Checks player's position relative to enemy, if within 5 tiles, chase!
+            this.alert = true;
+        } else {
+            this.alert = false;
+        }
+    }
+
+    chase() {
+        //Checks player's location and sets which tile to go to next to pursue them
+        if (this.alert && !this.isMoving) {
+            if (this.tileX != player.tileX) { //First checks X tiles to move horizontally
+                if (this.tileX < player.tileX) this.dirX = 1;
+                else if (this.tileX > player.tileX) this.dirX = -1;
+                
+            } 
+            else { //Once horizontally aligned with players, sets tile up or down to chase player
+                this.dirX = 0;
+                if (this.tileY != player.tileY) {
+                    if (this.tileY < player.tileY) this.dirY = 1;
+                    else if (this.tileY > player.tileY) this.dirY = -1;
+                    else this.dirY = 0
+            }
+        }
+          this.checkTargetTile()
+        }
+    }
+
+    checkTargetTile() {
+        //Calculate tile coordinates of next Tile;
+        let nextTileX = this.tileX + this.dirX;
+        let nextTileY = this.tileY + this.dirY;
+
+        //Check if nextTileX and nextTileY are both inbounds
+        //Remember && means AND (i.e. if ALL conditions are true)
+        if (nextTileX >= 0 &&       //left side of map
+            nextTileX < tilesX &&   //right side of map
+            nextTileY >= 0 &&       //top of map
+            nextTileY < tilesY) {  //bottom of map 
+
+            if (graphicsMap[nextTileY][nextTileX] !== 2 || graphicsMap[nextTileY][nextTileX] !== 3) {  // as long as its not a wall becasue the ghost can float over it
+                //If walkable, set tx and ty (pixel postiions)
+                this.tx = nextTileX * tileSize;
+                this.ty = nextTileY * tileSize;
+
+                //set this.isMoving to true to start Movement
+                this.isMoving = true;
+            }
+        }
+    }
+
+    move() {
+        //This is in our draw loop, so called move() is called every frame BUT...
+        if (this.isMoving) {
+            //this code block will only activate when this.isMoving = true. Otherwise, nothing happens.
+            //So first, start by moving in direction set by setDirection()
+            this.xPos += this.speed * this.dirX;
+            this.yPos += this.speed * this.dirY;
+
+            //Now check if player has reached targetX
+            if (this.xPos === this.tx && this.yPos === this.ty) {
+                //if there, stop moving and reset our variables
+                this.isMoving = false;
+                this.dirX = 0;
+                this.dirY = 0;
+            }
+        }
+    }
 }
