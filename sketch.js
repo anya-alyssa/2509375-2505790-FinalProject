@@ -15,6 +15,10 @@ let textures = [];
 let invX = 670; // position to start where to draw the inventory
 let invY = 0; // position to start where to draw the inventory
 
+let inputtedCode = ''; // for safe to get door key
+
+let itemInUse = null;
+
 let allItems = {
   Locket: {
     name: "Locket",
@@ -29,13 +33,13 @@ let allItems = {
     opacity: 100
   },
   StudyKey: {
-    name: "Rusty Key",
+    name: "Damaged Key",
     img: null,
     isEquipped: false,
     opacity: 100
   },
-  RoomKey: {
-    name: "Silver Key",
+  ParentRoomKey: {
+    name: "Lost Key",
     img: null,
     isEquipped: false,
     opacity: 100
@@ -57,6 +61,30 @@ let allItems = {
     img: null,
     isEquipped: false,
     opacity: 100
+  },
+  GhostRoomKey: {
+    name: "Silver Key",
+    img: null,
+    isEquipped: false,
+    opacity: 100
+  },
+  CabinetKey: {
+    name: "Rusty Key",
+    img: null,
+    isEquipped: false,
+    opacity: 100
+  },
+  ToolKit: {
+    name: "Tool Kit",
+    img: null,
+    isEquipped: false,
+    opacity: 100
+  },
+  BedsideTableKey: {
+    name: "Small Key",
+    img: null,
+    isEquipped: false,
+    opacity: 100
   }
 }
 
@@ -64,10 +92,14 @@ let allItems = {
 let itemTiles = {
   3: allItems.Paper,
   4: allItems.StudyKey,
-  5: allItems.RoomKey,
+  5: allItems.ParentRoomKey,
   6: allItems.DoorKey,
   7: allItems.Teddy,
-  8: allItems.Book
+  8: allItems.Book,
+  9: allItems.GhostRoomKey,
+  10: allItems.CabinetKey,
+  11: allItems.ToolKit,
+  12: allItems.BedsideTableKey
 }
 
 // game state
@@ -108,7 +140,7 @@ let entrance = {
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 7  E
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 8  S
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],  // 9
-    [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0]  // 10
+    [0, 0, 0, 1, 1, "esc", 1, 1, 0, 0, 0]  // 10
   ],
 
   startTileX: 6,
@@ -137,12 +169,12 @@ let livingRoom = {
   //   0  1  2  3  4  5  6  7  8  9, 10
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 0
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 1  X
-      [1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1], // 2  
-      [1, 1, 1, 0, 0, 0, 0, 0, 4, 1, 1], // 3  V
+      [1, 1, 1, 0, 0, 1, 3, 0, 0, 1, 1], // 2  
+      [1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1], // 3  V
       [1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1], // 4  A
       [1, 0, "ent", 0, 1, 0, 0, 0, 1, 1, 1], // 5  L
       [1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1], // 6  U
-      [1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1], // 7  E
+      [1, 1, 1, 0, 0, 0, 0, 0, 4, 1, 1], // 7  E
       [1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1], // 8  S
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],  // 9
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]  // 10
@@ -174,7 +206,7 @@ let kitchen = {
     //         2nd VALUE (x)  
     //   0  1  2  3  4  5  6  7  8  9, 10
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 0
-        [1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1], // 1  X
+        [1, 1, 9, 1, 1, 1, 1, 0, 0, 0, 1], // 1  X
         [1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1], // 2  
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, "b"], // 3  V
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 4  A
@@ -215,9 +247,9 @@ let bathroom = {
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 1  X
         [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0], // 2  
         [1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0], // 3  V
-        [1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0], // 4  A
+        [1, 0, 1, 1, 1, 1, 1, 10, 1, 0, 0], // 4  A
         [0, 1, 1, "k", 0, 0, 0, 0, 1, 0, 1], // 5  L
-        [1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0], // 6  U
+        [1, 0, 1, 1, 12, 0, 1, 0, 1, 0, 0], // 6  U
         [1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0], // 7  E
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 8  S
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],  // 9
@@ -234,7 +266,7 @@ let study = {
     // 0  1  2  3  4  5  6  7  8  9, 10 
       [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 0
       [4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4], // 1  X
-      [4, 2, 4, 4, 4, 4, 4, 4, 4, 2, 4], // 2  
+      [4, 2, 4, 4, 4, 5, 4, 4, 4, 2, 4], // 2  
       [4, 2, 0, 0, 0, 0, 0, 0, 0, 2, 4], // 3  V
       [4, 2, 0, 0, 0, 1, 0, 0, 0, 2, 4], // 4  A
       [4, 2, 0, 0, 1, 1, 1, 0, 0, 3, 4], // 5  L
@@ -250,7 +282,7 @@ let study = {
     //   0  1  2  3  4  5  6  7  8  9, 10
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 0
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 1  X
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 2  
+        [1, 1, 11, 1, 1, "sr", 1, 1, 1, 1, 1], // 2  
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1], // 3  V
         [1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1], // 4  A
         [0, 1, 0, 0, 1, 1, 1, 0, 0, "ent", 1], // 5  L
@@ -328,7 +360,7 @@ let ghostBedroom = {
     [0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0], // 2  
     [0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0], // 3  V
     [0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0], // 4  A
-    [0, 0, 1, 1, 0, 0, 0, 0, 0, "l", 0], // 5  L
+    [0, 0, 1, 5, 0, 0, 0, 0, 0, "l", 0], // 5  L
     [0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0], // 6  U
     [0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0], // 7  E
     [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0], // 8  S
@@ -367,8 +399,8 @@ let masterBedroom = {
     [0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0], // 3  V
     [0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0], // 4  A
     [0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0], // 5  L
-    [0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0], // 6  U
-    [0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0], // 7  E
+    [0, 0, 1, 8, 0, 0, 0, 1, 1, 1, 0], // 6  U
+    [0, 0, 1, 0, 0, 0, 0, 6, 1, 1, 0], // 7  E
     [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0], // 8  S
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],  // 9
     [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0]  // 10
@@ -378,10 +410,54 @@ let masterBedroom = {
   startTileY: 5 // starttiles for the player
 }
 
+let secretRoom = {
+
+  graphicsMap: [
+    //         2nd VALUE (x)  
+    // 0  1  2  3  4  5  6  7  8  9, 10
+      [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 0
+      [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 1  X
+      [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 2  
+      [4, 4, 2, 2, 2, 2, 2, 2, 2, 4, 4], // 3  V
+      [4, 4, 2, 4, 0, 5, 0, 1, 2, 4, 4], // 4  A
+      [4, 4, 2, 4, 0, 0, 0, 0, 2, 4, 4], // 5  L
+      [4, 4, 2, 0, 0, 0, 0, 0, 2, 4, 4], // 6  U
+      [4, 4, 2, 2, 2, 3, 2, 2, 2, 4, 4], // 7  E
+      [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 8  S
+      [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],  // 9
+      [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]  // 10
+    ],
+  
+    tileRules: [
+    //         2nd VALUE (x)  
+    //   0  1  2  3  4  5  6  7  8  9, 10
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 0
+        [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 1  X
+        [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0], // 2  
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0], // 3  V
+        [1, 0, 1, 0, 0, 7, 0, 0, 1, 0, 0], // 4  A
+        [0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1], // 5  L
+        [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0], // 6  U
+        [1, 1, 1, 1, 1, "s", 1, 1, 1, 0, 0], // 7  E
+        [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 8  S
+        [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],  // 9
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]  // 10
+    ],
+
+  startTileX: 4, //Sets X tile to start player on
+  startTileY: 5  //Sets Y tile to start player on
+}
+
 //// LEVEL CONTROL VARIABLES
-let rooms = [entrance, livingRoom, kitchen, bathroom, study, landing, ghostBedroom, masterBedroom];
+let rooms = [entrance, livingRoom, kitchen, bathroom, study, landing, ghostBedroom, masterBedroom, secretRoom];
 let currentRoom = 0;
 let previousRoom = 0;
+let studyOpened = false; 
+let mbOpened = false; // masterbedroom
+let gbOpened = false; // ghost bedrtoom
+let srOpened = false; // secret room
+let safeOpened = false;
+
 let graphicsMap;
 let tileRules;
 let count;
@@ -436,6 +512,9 @@ function loadLevel() {
   else if (currentRoom === 4 && previousRoom === 0) {
     rooms[currentRoom].startTileX = 8;
     rooms[currentRoom].startTileY = 5;
+  } else if (currentRoom === 4 && previousRoom === 8) {
+    rooms[currentRoom].startTileX = 5;
+    rooms[currentRoom].startTileY = 3;
   } 
   // landing
   else if (currentRoom === 5 && previousRoom === 2) {
@@ -457,6 +536,11 @@ function loadLevel() {
   else if (currentRoom === 7 && previousRoom === 5) {
     rooms[currentRoom].startTileX = 5;
     rooms[currentRoom].startTileY = 2;
+  } 
+  // secret room
+  else if (currentRoom === 8 && previousRoom === 4) {
+    rooms[currentRoom].startTileX = 5;
+    rooms[currentRoom].startTileY = 6;
   } 
 
   graphicsMap = rooms[currentRoom].graphicsMap;
@@ -499,18 +583,19 @@ function preload() {
   // items 
   allItems.Locket.img = loadImage("images/locket.jpg");
   allItems.Paper.img = loadImage("images/paper.jpg");
-  allItems.StudyKey.img = loadImage("images/rustyKey.jpg");
-  allItems.RoomKey.img = loadImage("images/silverKey.jpg");
+  allItems.StudyKey.img = loadImage("images/rustyKey.jpg"); // CHANGE TO DAMAGED KEY
+  allItems.ParentRoomKey.img = loadImage("images/silverKey.jpg"); // CHNAGE TO LOST KEY
+  allItems.GhostRoomKey.img = loadImage("images/silverKey.jpg");
   allItems.DoorKey.img = loadImage("images/goldKey.jpg");
   allItems.Teddy.img = loadImage("images/teddy.jpg");
   allItems.Book.img = loadImage("images/book.jpg");
-  
+  allItems.CabinetKey.img = loadImage("images/rustyKey.jpg");
 }
 
 function draw() {
   background(0);
 
-if (gameState  == 0) {
+if (gameState == 0) {
   textSize(50);
   fill(255);
   background(0);
@@ -562,31 +647,79 @@ if (gameState  == 0) {
   }
 
   rect(127, 667, player.sanity/16.67, 26);
-} else if (gameState == 2) {
+} 
+
+else if (gameState == 2) {
   background(0);
   textSize(50);
   fill(255);
   textAlign(CENTER);
   text('game over', width/2, height/2);
+} 
+
+else if (gameState == 3) {
+  textSize(50);
+  fill(255);
+  background(0);
+  textAlign(CENTER);
+  text('You Escaped', width/2, height/2);
+} 
+
+else if (gameState == 'a') {
+  textAlign(CENTER);
+  fill(255);
+  textSize(25);
+  text('Enter Code', width/2, height/2);
+  text(inputtedCode, width/2, 400);
 }
 
+}
+
+// more efficient to have a function to toggle so i dont write it for all of the hotbar slots also it will only allo one to be equipped at a time
+function equipItem (slot) {
+  if (player.inventory.items[slot]) {
+      player.inventory.items[slot].isEquipped = !player.inventory.items[slot].isEquipped; // toggles it
+      
+      if (player.inventory.items[slot].isEquipped == true) {
+        itemInUse = player.inventory.items[slot].name;
+        console.log(itemInUse);
+        player.inventory.items[slot].opacity = 255; // visually equip it
+        for (let i = 0; i < player.inventory.items.length; i++) { 
+          // ignores the one that you just equipped and makes sure it is in the players inventory
+          if (i !== slot && player.inventory.items[i]) {
+            player.inventory.items[i].isEquipped = false; // unequips them
+            player.inventory.items[i].opacity = 100; // visually unequip
+          }
+        } 
+      } else {
+        player.inventory.items[slot].opacity = 100; // unequip
+        itemInUse = null;
+        console.log(itemInUse);
+      }
+  }
 }
 
 function keyPressed() {
-  // visual way to show that the item is equipped
+if (gameState === 1) { // doesnt interfere wuth other gamststes
   if (keyCode === 76) { // if player clicks L
     if (player.inventory.items[10]) {
       player.inventory.items[10].isEquipped = !player.inventory.items[10].isEquipped; // toggles it
       if (player.inventory.items[10].isEquipped == true) {
+        itemInUse = player.inventory.items[10].name;
+        console.log(itemInUse);
         player.inventory.items[10].opacity = 255;
       } else {
         player.inventory.items[10].opacity = 100;
+        itemInUse = null;
+        console.log(itemInUse);
       }
     }
   } 
   // if the player is walking they cannot use the lockets ability
   if (keyCode === 87 || keyCode === 83 || keyCode === 65 || keyCode === 68) {
-    if (player.inventory.items[10]) {
+    if (player.inventory.items[10].isEquipped) {
+      itemInUse = null;
+      console.log(itemInUse);
       player.inventory.items[10].isEquipped = false;
       player.inventory.items[10].opacity = 100;
     }
@@ -599,7 +732,70 @@ function keyPressed() {
     let targetTile = tileRules[player.nextTileY][player.nextTileX];
 
     // if the value on the tile stores an item (is part of the itemTile list)
-    if (itemTiles[targetTile]) {
+    if (itemTiles[targetTile] == allItems.DoorKey) {
+      if (safeOpened === false) {
+        gameState = 'a';
+      } else if (safeOpened === true) {
+        // runs function to add the item to the inventory and if it returns as true (adds the item to the inventory)
+        if (player.inventory.addItem(itemTiles[targetTile])) {
+          tileRules[player.nextTileY][player.nextTileX] = 1; // set the tile to an obstacle/empty
+          console.log('you picked up an item');
+        } else { // if it returns as false
+          console.log('inventory is full');
+        }
+      }
+    } else if (itemTiles[targetTile] == allItems.GhostRoomKey) {
+      for (let i = 0; i < player.inventory.items.length; i++) { 
+        if (player.inventory.items[i] && player.inventory.items[i].name === "Rusty Key" && player.inventory.items[i].isEquipped == true) { // checks for where there is an item, if its the rusty key and if its equipped
+          // runs function to add the item to the inventory and if it returns as true (adds the item to the inventory)
+          if (player.inventory.addItem(itemTiles[targetTile])) {
+            tileRules[player.nextTileY][player.nextTileX] = 1; // set the tile to an obstacle/empty
+            console.log('you picked up an item');
+            player.inventory.removeItem(i);
+            itemInUse = null;
+            break; 
+          } else { // if it returns as false
+            console.log('inventory is full');
+          }
+        } else {
+          console.log('this cabinet seems to be locked...');
+        }
+      } 
+    } else if (itemTiles[targetTile] == allItems.CabinetKey) {
+      for (let i = 0; i < player.inventory.items.length; i++) { 
+        if (player.inventory.items[i] && player.inventory.items[i].name === "Tool Kit" && player.inventory.items[i].isEquipped == true) { // checks for where there is an item, if its the tool kit and if its equipped
+          // runs function to add the item to the inventory and if it returns as true (adds the item to the inventory)
+          if (player.inventory.addItem(itemTiles[targetTile])) {
+            tileRules[player.nextTileY][player.nextTileX] = 1; // set the tile to an obstacle/empty
+            console.log('you picked up an item');
+            player.inventory.removeItem(i);
+            itemInUse = null;
+            break; 
+          } else { // if it returns as false
+            console.log('inventory is full');
+          }
+        } else {
+          console.log('this seems to be screwed on...');
+        }
+      }
+    } else if (itemTiles[targetTile] == allItems.Book) {
+      for (let i = 0; i < player.inventory.items.length; i++) { 
+        if (player.inventory.items[i] && player.inventory.items[i].name === "Small Key" && player.inventory.items[i].isEquipped == true) { // checks for where there is an item, if its the tool kit and if its equipped
+          // runs function to add the item to the inventory and if it returns as true (adds the item to the inventory)
+          if (player.inventory.addItem(itemTiles[targetTile])) {
+            tileRules[player.nextTileY][player.nextTileX] = 1; // set the tile to an obstacle/empty
+            console.log('you picked up an item');
+            player.inventory.removeItem(i);
+            itemInUse = null;
+            break; 
+          } else { // if it returns as false
+            console.log('inventory is full');
+          }
+        } else {
+          console.log("It's locked. I wonder what's inside...");
+        }
+      }
+    } else if (itemTiles[targetTile]) {
       // runs function to add the item to the inventory and if it returns as true (adds the item to the inventory)
       if (player.inventory.addItem(itemTiles[targetTile])) {
         tileRules[player.nextTileY][player.nextTileX] = 1; // set the tile to an obstacle/empty
@@ -611,7 +807,61 @@ function keyPressed() {
       console.log('there is nothing to pick up here'); 
     }       
   }
+
+  if (keyCode === 48) { // if player clicks 0
+    equipItem(0);
+  } 
+  if (keyCode === 49) { // if player clicks 1
+    equipItem(1);
+  } 
+  if (keyCode === 50) { // if player clicks 2
+    equipItem(2);
+  } 
+  if (keyCode === 51) { // if player clicks 3
+    equipItem(3);
+  } 
+  if (keyCode === 52) { // if player clicks 4
+    equipItem(4);
+  } 
+  if (keyCode === 53) { // if player clicks 5
+    equipItem(5);
+  } 
+  if (keyCode === 54) { // if player clicks 6
+    equipItem(6);
+  } 
+  if (keyCode === 55) { // if player clicks 7
+    equipItem(7);
+  } 
+  if (keyCode === 56) { // if player clicks 8
+    equipItem(8);
+  } 
+  if (keyCode === 57) { // if player clicks 9
+    equipItem(9);
+  } 
+} else if (gameState === 'a') {
+  // this was hard to figure out
+  if (key >= 0 && key <= 9) { // in between 0 and 9 i did not know using just key was a thing 
+    if (inputtedCode.length < 4) {
+      inputtedCode = inputtedCode + key;
+    } else if (inputtedCode.length > 5) {
+      textSize(50);
+      fill(255, 0, 0);
+      text(inputtedCode, width/2, 400);
+    }
+  } else if (keyCode === 13) { // keycode for enter
+    if (inputtedCode === '6382') {
+      safeOpened = true;
+      gameState = 1;
+      console.log('safe opened');
+    } else {
+      gameState = 1;
+      console.log('incorrect code');
+    }
+      inputtedCode = '';
+  }
 }
+}
+
 
 class Player {
   constructor(sprite, startX, startY, tileSize, tileRules) {
@@ -795,18 +1045,57 @@ class Player {
             this.transition = true;
           } 
           
-          else if (tileRules[nextTileY][nextTileX] === "s") {
-            previousRoom = currentRoom;
-            currentRoom = 4;
+          else if (tileRules[nextTileY][nextTileX] === "s") {           
+            if (currentRoom == 0) {
+              if (itemInUse === "Damaged Key") {
+                previousRoom = currentRoom;
+                currentRoom = 4;
 
-            // loads the next rooms
-            loadLevel();
+                // loads the next room
+                loadLevel();
 
-            // sets the players start position
-            this.setPlayerPosition();
-            count = 0;
-            this.transition = true;
-          }
+                // sets the players start position
+                this.setPlayerPosition();
+                count = 0;
+                this.transition = true;
+
+                // unlock room and remove key
+                studyOpened = true; 
+
+                for (let i = 0; i < player.inventory.items.length; i++) { 
+                  if (player.inventory.items[i].name === "Damaged Key" && player.inventory.items[i].isEquipped == true) {
+                    player.inventory.removeItem(i);
+                    itemInUse = null;
+                    break; 
+                  } 
+                }
+              } else if (studyOpened == true) {
+                previousRoom = currentRoom;
+                currentRoom = 4;
+
+                // loads the next rooms
+                loadLevel();
+
+                // sets the players start position
+                this.setPlayerPosition();
+                count = 0;
+                this.transition = true;
+              } else {
+                console.log('you need a key to open this door');
+              } 
+            } else if (currentRoom == 8) {
+              previousRoom = currentRoom;
+              currentRoom = 4
+
+              // loads the next room
+              loadLevel();
+
+              // sets the players start position
+              this.setPlayerPosition();
+              count = 0;
+              this.transition = true;
+            }
+          }    
 
           else if (tileRules[nextTileY][nextTileX] === "l") {
             previousRoom = currentRoom;
@@ -822,33 +1111,129 @@ class Player {
           }
 
           else if (tileRules[nextTileY][nextTileX] === "gb") {
-            previousRoom = currentRoom;
-            currentRoom = 6;
+            if (itemInUse === "Silver Key") {
+              previousRoom = currentRoom;
+              currentRoom = 6;
+              // loads the next room
+              loadLevel();
 
-            // loads the next rooms
-            loadLevel();
+              // sets the players start position
+              this.setPlayerPosition();
+              count = 0;
+              this.transition = true;
 
-            // sets the players start position
-            this.setPlayerPosition();
-            count = 0;
-            this.transition = true;
+              // unlock room and remove key
+              gbOpened = true; 
+
+              for (let i = 0; i < player.inventory.items.length; i++) { 
+                if (player.inventory.items[i].name === "Silver Key" && player.inventory.items[i].isEquipped == true) {
+                  player.inventory.removeItem(i);
+                  itemInUse = null;
+                  break; 
+                } 
+              }
+            } else if (gbOpened == true) {
+              previousRoom = currentRoom;
+              currentRoom = 6;
+
+              // loads the next rooms
+              loadLevel();
+
+              // sets the players start position
+              this.setPlayerPosition();
+              count = 0;
+              this.transition = true;
+            } else {
+              console.log('you need a key to open this door');
+            }
           }
 
           else if (tileRules[nextTileY][nextTileX] === "mb") {
-            previousRoom = currentRoom;
-            currentRoom = 7;
+            if (itemInUse === "Lost Key") {
+              previousRoom = currentRoom;
+              currentRoom = 7;
+              // loads the next room
+              loadLevel();
 
-            // loads the next rooms
-            loadLevel();
+              // sets the players start position
+              this.setPlayerPosition();
+              count = 0;
+              this.transition = true;
 
-            // sets the players start position
-            this.setPlayerPosition();
-            count = 0;
-            this.transition = true;
+              // unlock room and remove key
+              mbOpened = true; 
+
+              for (let i = 0; i < player.inventory.items.length; i++) { 
+                if (player.inventory.items[i].name === "Lost Key" && player.inventory.items[i].isEquipped == true) {
+                  player.inventory.removeItem(i);
+                  itemInUse = null;
+                  break; 
+                } 
+              }
+            } else if (mbOpened == true) {
+              previousRoom = currentRoom;
+              currentRoom = 7;
+
+              // loads the next rooms
+              loadLevel();
+
+              // sets the players start position
+              this.setPlayerPosition();
+              count = 0;
+              this.transition = true;
+            } else {
+              console.log('you need a key to open this door');
+            }
+          }
+
+          else if (tileRules[nextTileY][nextTileX] === "sr") {
+            if (itemInUse === "Book") {
+              previousRoom = currentRoom;
+              currentRoom = 8;
+              // loads the next room
+              loadLevel();
+
+              // sets the players start position
+              this.setPlayerPosition();
+              count = 0;
+              this.transition = true;
+
+              // unlock room and remove key
+              srOpened = true; 
+
+              for (let i = 0; i < player.inventory.items.length; i++) { 
+                if (player.inventory.items[i] && player.inventory.items[i].name === "Book" && player.inventory.items[i].isEquipped == true) {
+                  player.inventory.removeItem(i);
+                  itemInUse = null;
+                  break; 
+                } 
+              }
+            } else if (srOpened == true) {
+              previousRoom = currentRoom;
+              currentRoom = 8;
+
+              // loads the next rooms
+              loadLevel();
+
+              // sets the players start position
+              this.setPlayerPosition();
+              count = 0;
+              this.transition = true;
+            } else {
+              console.log('it looks like there is a book missing here');
+            }
+          }
+          
+          else if (tileRules[nextTileY][nextTileX] === "esc") {
+            if (itemInUse === "Gold Key") {
+              gameState = 3;
+            } else {
+              console.log('you need a key to open this door');
+            } 
           }
 
           // check if the next tile is walkable or not
-          else if (tileRules[nextTileY][nextTileX] != 1 && tileRules[nextTileY][nextTileX] != 4) { // if it's not (!=) the tile you can't walk on
+          else if (tileRules[nextTileY][nextTileX] != 1 && tileRules[nextTileY][nextTileX] < 3) { // if it's not (!=) the tile you can't walk on
             // set tx and ty
             this.tx =  nextTileX * tileSize;
             this.ty = nextTileY * tileSize;
