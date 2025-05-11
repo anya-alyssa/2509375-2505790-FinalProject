@@ -51,6 +51,12 @@ let allItems = {
     img: null,
     isEquipped: false,
     opacity: 100
+  },
+  Book: {
+    name: "Book",
+    img: null,
+    isEquipped: false,
+    opacity: 100
   }
 }
 
@@ -60,7 +66,8 @@ let itemTiles = {
   4: allItems.StudyKey,
   5: allItems.RoomKey,
   6: allItems.DoorKey,
-  7: allItems.Teddy
+  7: allItems.Teddy,
+  8: allItems.Book
 }
 
 // game state
@@ -491,6 +498,13 @@ function preload() {
 
   // items 
   allItems.Locket.img = loadImage("images/locket.jpg");
+  allItems.Paper.img = loadImage("images/paper.jpg");
+  allItems.StudyKey.img = loadImage("images/rustyKey.jpg");
+  allItems.RoomKey.img = loadImage("images/silverKey.jpg");
+  allItems.DoorKey.img = loadImage("images/goldKey.jpg");
+  allItems.Teddy.img = loadImage("images/teddy.jpg");
+  allItems.Book.img = loadImage("images/book.jpg");
+  
 }
 
 function draw() {
