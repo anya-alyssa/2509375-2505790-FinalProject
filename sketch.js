@@ -131,7 +131,7 @@ let livingRoom = {
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 0
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 1  X
       [1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1], // 2  
-      [1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1], // 3  V
+      [1, 1, 1, 0, 0, 0, 0, 0, 4, 1, 1], // 3  V
       [1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1], // 4  A
       [1, 0, "ent", 0, 1, 0, 0, 0, 1, 1, 1], // 5  L
       [1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1], // 6  U
@@ -569,14 +569,17 @@ function keyPressed() {
         player.inventory.items[10].opacity = 100;
       }
     }
-  } // if the player is walking they cannot use the lockets ability
+  } 
+  // if the player is walking they cannot use the lockets ability
   if (keyCode === 87 || keyCode === 83 || keyCode === 65 || keyCode === 68) {
     if (player.inventory.items[10]) {
       player.inventory.items[10].isEquipped = false;
       player.inventory.items[10].opacity = 100;
     }
-  } // searching a tile
+  } 
+  // searching a tile
   if (keyCode === 32) { // if player clicks the space bar
+        console.log('Spacebar pressed');
     player.getNextTile(); // update the coordinates of the tile in front of the player
 
     // checks if the next tile is in bounds of the tilemap
@@ -586,6 +589,23 @@ function keyPressed() {
         player.targetTileY < player.tilesY) { // bottom bound
 
           // somehow find the tilevalue for that tilemap coord and then check what item has it and then pick it up make the tile empty
+          let targetTile = tileRules[player.targetTileY][player.targetTileX]; 
+          
+          console.log('Target tile value:', targetTile);
+          console.log('Item at target:', itemTiles[targetTile]);
+
+          // if the value on the tile stores an item (is part of the itemTile list)
+          if (itemTiles[targetTile]) {
+            // runs function to add the item to the inventory and if it returns as true (adds the item to the inventory)
+            if (player.inventory.addItem(itemTiles[targetTile])) {
+              tileRules[player.targetTileY][player.targetTileX] = 1; // set the tile to an obstacle/empty
+              console.log('you picked up an item');
+            } else { // if it returns as false
+              console.log('inventory is full');
+            }
+          } else { // if its not an item tile
+            console.log('there is nothing to pick up here');
+          }
         }
   }
 }
@@ -805,7 +825,7 @@ class Player {
           }
 
           // check if the next tile is walkable or not
-          else if (tileRules[nextTileY][nextTileX] != 1) { // if it's not (!=) the tile you can't walk on
+          else if (tileRules[nextTileY][nextTileX] != 1 && tileRules[nextTileY][nextTileX] != 4) { // if it's not (!=) the tile you can't walk on
             // set tx and ty
             this.tx =  nextTileX * tileSize;
             this.ty = nextTileY * tileSize;
