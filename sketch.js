@@ -577,36 +577,25 @@ function keyPressed() {
       player.inventory.items[10].opacity = 100;
     }
   } 
-  // searching a tile
+  // searching a tile (this was very hard to get right)
   if (keyCode === 32) { // if player clicks the space bar
-        console.log('Spacebar pressed');
     player.getNextTile(); // update the coordinates of the tile in front of the player
+    console.log('Direction:', player.lastDirX, player.lastDirY);
+  
+    let targetTile = tileRules[player.nextTileY][player.nextTileX];
 
-    // checks if the next tile is in bounds of the tilemap
-    if (player.targetTileX >= 0 && // left bound
-        player.targetTileX < player.tilesX && // right bound
-        player.targetTileY >= 0 && // top bound
-        player.targetTileY < player.tilesY) { // bottom bound
-
-          // somehow find the tilevalue for that tilemap coord and then check what item has it and then pick it up make the tile empty
-          let targetTile = tileRules[player.targetTileY][player.targetTileX]; 
-          
-          console.log('Target tile value:', targetTile);
-          console.log('Item at target:', itemTiles[targetTile]);
-
-          // if the value on the tile stores an item (is part of the itemTile list)
-          if (itemTiles[targetTile]) {
-            // runs function to add the item to the inventory and if it returns as true (adds the item to the inventory)
-            if (player.inventory.addItem(itemTiles[targetTile])) {
-              tileRules[player.targetTileY][player.targetTileX] = 1; // set the tile to an obstacle/empty
-              console.log('you picked up an item');
-            } else { // if it returns as false
-              console.log('inventory is full');
-            }
-          } else { // if its not an item tile
-            console.log('there is nothing to pick up here');
-          }
-        }
+    // if the value on the tile stores an item (is part of the itemTile list)
+    if (itemTiles[targetTile]) {
+      // runs function to add the item to the inventory and if it returns as true (adds the item to the inventory)
+      if (player.inventory.addItem(itemTiles[targetTile])) {
+        tileRules[player.nextTileY][player.nextTileX] = 1; // set the tile to an obstacle/empty
+        console.log('you picked up an item');
+      } else { // if it returns as false
+        console.log('inventory is full');
+      }
+    } else { // if its not an item tile
+      console.log('there is nothing to pick up here'); 
+    }       
   }
 }
 
@@ -623,9 +612,11 @@ class Player {
     this.xPos = startX * tileSize; // refers to the pixel position
     this.yPos = startY * tileSize; // in relation to the canvas
 
-    // direction player wants to move
-    this.dirX = 0;
-    this.dirY = 0;
+    // direction of player
+    this.dirX = 0; // current
+    this.dirY = 0; // current
+    this.lastDirX = 0; 
+    this.lastDirY = 0; // needed for getNextTile
 
     // player's target pixel position
     this.tx = this.xPos;
@@ -642,13 +633,10 @@ class Player {
 
     // sanity
     this.sanity = 10000;
-  }
 
-  // getting the next tile coords to search for item
-  getNextTile() {
-    // check the tile in front of the player 
-    let targetTileX = this.tileX + this.dirX;
-    let targetTileY = this.tileY + this.dirY;
+    // for item finding
+    this.nextTileX = 0;
+    this.nextTileY = 0;
   }
 
   updateSanity() {
@@ -669,6 +657,8 @@ class Player {
 } 
 
   setDirection() {
+    // reset the direction
+
     let up = 87; // w
     let down = 83; // s
     let left = 65; // a
@@ -679,25 +669,44 @@ class Player {
       if (keyIsDown(up)) {
         this.dirX = 0;
         this.dirY = -1;
+        this.lastDirX = 0;
+        this.lastDirY = -1;
       }
 
-      if (keyIsDown(down)) {
+      else if (keyIsDown(down)) {
         this.dirX = 0;
         this.dirY = 1;
+        this.lastDirX = 0;
+        this.lastDirY = 1;
       }
 
-      if (keyIsDown(left)) {
+      else if (keyIsDown(left)) {
         this.dirX = -1;
         this.dirY = 0;
+        this.lastDirX = -1;
+        this.lastDirY = 0;
       }
 
-      if (keyIsDown(right)) {
+      else if (keyIsDown(right)) {
         this.dirX = 1;
         this.dirY = 0;
+        this.lastDirX = 1;
+        this.lastDirY = 0;
       }
 
       this.checkTargetTile();
     }
+  }
+
+  // getting the next tile coords to search for item
+  getNextTile() {
+    // calculate position of current tile
+    this.tileX = Math.floor(this.xPos / this.tileSize);
+    this.tileY = Math.floor(this.yPos / this.tileSize);
+    
+    // check the tile in front of the player 
+    this.nextTileX = this.tileX + this.lastDirX;
+    this.nextTileY = this.tileY + this.lastDirY;
   }
 
   checkTargetTile() {
@@ -857,8 +866,6 @@ class Player {
     this.tileY = rooms[currentRoom].startTileY;
     this.xPos = rooms[currentRoom].startTileX * tileSize;
     this.yPos = rooms[currentRoom].startTileY * tileSize;
-    //this.dirX = 0;
-    //this.dirY = 0;
   }
 
 }
