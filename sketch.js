@@ -116,7 +116,7 @@ let itemTiles = {
 }
 
 // game state
-let gameState = 1;
+let gameState = 0;
 
 ////// LEVEL DATA OBJECTS
 //// RULES
@@ -647,6 +647,14 @@ if (gameState == 0) {
     ghost.chase();
     ghost.move();
     ghost.checkAlert();
+    // ifplayer collides with the ghost while holding the teddy bear
+    if (ghost.playerCollision(player)) {
+      for (let i = 0; i < player.inventory.items.length; i++) { 
+        if (player.inventory.items[i] && player.inventory.items[i].name === "Teddy Bear" && player.inventory.items[i].isEquipped == true) { // checks for where there is an item, if its the tool kit and if its equipped
+          gameState = 4;
+        }
+      }
+    }
   }
 
   if (player.transition) {
@@ -961,10 +969,15 @@ class Player {
       if (this.sanity > 10000) {
         this.sanity = 10000; // cannot go over 10000
       }
+      // covers every encounter with or without ghost
     } else if (this.sanity > 0 && !ghost) {
       this.sanity = this.sanity - 1;
-    } else if (this.sanity > 0 && ghost.alert == true) { // when you're in contact with the ghost your snity decreases
+    } else if (this.sanity > 0 && ghost.alert == false) {
+      this.sanity = this.sanity - 1;
+    } else if (this.sanity > 0 && ghost.alert == true && ghost.playerCollision() == false) { // when you're in contact with the ghost your snity decreases
       this.sanity = this.sanity - 5;
+    } else if (this.sanity > 0 && ghost.playerCollision() == true) {
+      this.sanity = this.sanity - 10;
     } else if (this.sanity == 0) {
       gameState = 2;
     } 
@@ -1484,7 +1497,7 @@ class Tile {
 }
 
 
-// enemy code from git repository with minor adjustments
+// enemy code from git repository with minor adjustments and added player collision function
 class Ghost {
     constructor(sprite, tileX, tileY, tileSize, graphicsMap) {
         //Sprites
@@ -1514,6 +1527,18 @@ class Ghost {
 
     display() {
         image(this.sprite, this.xPos, this.yPos, this.tileSize, this.tileSize)
+    }
+
+    playerCollision() {
+      // if any part of them collide
+      if (player.xPos < ghost.xPos + ghost.tileSize &&
+          player.yPos < ghost.yPos + ghost.tileSize &&
+          player.xPos + player.tileSize > ghost.xPos &&
+          player.yPos + player.tileSize > ghost.yPos) {
+            return true;
+      } else {
+          return false;
+      }
     }
 
     checkAlert() {
