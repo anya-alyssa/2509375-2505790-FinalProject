@@ -91,6 +91,12 @@ let allItems = {
     img: null,
     isEquipped: false,
     opacity: 100
+  },
+  BitsAndBobs: {
+    name: "Bits and Bobs",
+    img: null,
+    isEquipped: false,
+    opacity: 100
   }
 }
 
@@ -105,7 +111,8 @@ let itemTiles = {
   9: allItems.GhostRoomKey,
   10: allItems.CabinetKey,
   11: allItems.ToolKit,
-  12: allItems.BedsideTableKey
+  12: allItems.BedsideTableKey,
+  13: allItems.BitsAndBobs
 }
 
 // game state
@@ -178,10 +185,10 @@ let livingRoom = {
       [1, 1, 1, 0, 0, 1, 3, 0, 0, 1, 1], // 2  
       [1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1], // 3  V
       [1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1], // 4  A
-      [1, 0, "ent", 0, 1, 0, 0, 0, 1, 1, 1], // 5  L
+      [1, 0, "ent", 0, 13, 0, 0, 0, 1, 1, 1], // 5  L
       [1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1], // 6  U
       [1, 1, 1, 0, 0, 0, 0, 0, 4, 1, 1], // 7  E
-      [1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1], // 8  S
+      [1, 1, 1, 0, 0, 13, 0, 0, 0, 1, 1], // 8  S
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],  // 9
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]  // 10
   ],
@@ -212,14 +219,14 @@ let kitchen = {
     //         2nd VALUE (x)  
     //   0  1  2  3  4  5  6  7  8  9, 10
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 0
-        [1, 1, 9, 1, 1, 1, 1, 0, 0, 0, 1], // 1  X
+        [1, 1, 9, 13, 1, 13, 1, 0, 0, 0, 1], // 1  X
         [1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1], // 2  
-        [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, "b"], // 3  V
+        [1, 13, 0, 0, 0, 0, 0, 0, 0, 0, "b"], // 3  V
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 4  A
         [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1], // 5  L
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 6  U
         [1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1], // 7  E
-        [1, 0, 1, 1, 1, 0, 0, 0, 0, 0, "l"], // 8  S
+        [1, 0, 1, 1, 13, 0, 0, 0, 0, 0, "l"], // 8  S
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, "l"],  // 9
         [1, 1, 1, 1, 1, 1, 1, "ent", "ent", "ent", 1]  // 10
     ],
@@ -255,7 +262,7 @@ let bathroom = {
         [1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0], // 3  V
         [1, 0, 1, 1, 1, 1, 1, 10, 1, 0, 0], // 4  A
         [0, 1, 1, "k", 0, 0, 0, 0, 1, 0, 1], // 5  L
-        [1, 0, 1, 1, 12, 0, 1, 0, 1, 0, 0], // 6  U
+        [1, 0, 1, 1, 12, 0, 13, 0, 1, 0, 0], // 6  U
         [1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0], // 7  E
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 8  S
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],  // 9
@@ -277,7 +284,7 @@ let study = {
       [4, 2, 0, 0, 0, 1, 0, 0, 0, 2, 4], // 4  A
       [4, 2, 0, 0, 1, 1, 1, 0, 0, 3, 4], // 5  L
       [4, 2, 0, 0, 1, 1, 1, 0, 0, 2, 4], // 6  U
-      [4, 2, 0, 0, 0, 0, 0, 0, 0, 2, 4], // 7  E
+      [4, 2, 0, 0, 0, 1, 0, 0, 0, 2, 4], // 7  E
       [4, 2, 0, 0, 0, 0, 0, 0, 0, 2, 4], // 8  S
       [4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4],  // 9
       [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]  // 10
@@ -293,7 +300,7 @@ let study = {
         [1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1], // 4  A
         [0, 1, 0, 0, 1, 1, 1, 0, 0, "ent", 1], // 5  L
         [1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1], // 6  U
-        [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1], // 7  E
+        [1, 1, 0, 0, 0, 13, 0, 0, 0, 1, 1], // 7  E
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1], // 8  S
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],  // 9
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]  // 10
@@ -363,9 +370,9 @@ let ghostBedroom = {
   // 0  1  2  3  4  5  6  7  8  9, 10
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 0
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 1  X
-    [0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0], // 2  
+    [0, 0, 1, 1, 1, 1, 1, 13, 0, 1, 0], // 2  
     [0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0], // 3  V
-    [0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0], // 4  A
+    [0, 0, 1, 0, 0, 13, 1, 0, 0, 1, 0], // 4  A
     [0, 0, 1, 5, 0, 0, 0, 0, 0, "l", 0], // 5  L
     [0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0], // 6  U
     [0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0], // 7  E
@@ -401,8 +408,8 @@ let masterBedroom = {
   // 0  1  2  3  4  5  6  7  8  9, 10
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 0
     [0, 0, 1, 1, 1, "l", 1, 1, 1, 1, 0], // 1  X
-    [0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0], // 2  
-    [0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0], // 3  V
+    [0, 0, 1, 0, 0, 0, 0, 13, 1, 1, 0], // 2  
+    [0, 0, 1, 13, 0, 0, 0, 1, 1, 1, 0], // 3  V
     [0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0], // 4  A
     [0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0], // 5  L
     [0, 0, 1, 8, 0, 0, 0, 1, 1, 1, 0], // 6  U
@@ -441,8 +448,8 @@ let secretRoom = {
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 1  X
         [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0], // 2  
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0], // 3  V
-        [1, 0, 1, 0, 0, 7, 0, 0, 1, 0, 0], // 4  A
-        [0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1], // 5  L
+        [1, 0, 1, 0, 0, 7, 0, 13, 1, 0, 0], // 4  A
+        [0, 1, 1, 13, 0, 0, 0, 0, 1, 0, 1], // 5  L
         [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0], // 6  U
         [1, 1, 1, 1, 1, "s", 1, 1, 1, 0, 0], // 7  E
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 8  S
@@ -605,6 +612,9 @@ function preload() {
   allItems.Teddy.img = loadImage("images/teddy.jpg");
   allItems.Book.img = loadImage("images/book.jpg");
   allItems.CabinetKey.img = loadImage("images/rustyKey.jpg");
+
+  // sanity
+  lights = loadImage("images/void_50x.png");
 }
 
 function draw() {
@@ -665,7 +675,6 @@ if (gameState == 0) {
 
   if (player.sanity > 0 && player.sanity < 1500) {
     fill(255, 0, 0);
-    //image();
   }
 
   rect(127, 667, player.sanity/16.67, 26);
@@ -686,6 +695,14 @@ else if (gameState == 3) {
   textAlign(CENTER);
   text('You Escaped', width/2, height/2);
 } 
+
+else if (gameState == 4) {
+  textSize(50);
+  fill(255);
+  background(0);
+  textAlign(CENTER);
+  text('You helped the ghost', width/2, height/2);
+}
 
 else if (gameState == 'a') {
   textAlign(CENTER);
@@ -746,6 +763,18 @@ if (gameState === 1) { // doesnt interfere wuth other gamststes
       player.inventory.items[10].opacity = 100;
     }
   } 
+
+  if (keyCode === 81) {
+    for (let i = 0; i < player.inventory.items.length; i++) { 
+      if (player.inventory.items[i] && player.inventory.items[i].name === "Bits and Bobs" && player.inventory.items[i].isEquipped == true) { // checks for where there is an item, if its the rusty key and if its equipped
+        // runs function to add the item to the inventory and if it returns as true (adds the item to the inventory)
+        player.inventory.removeItem(i);
+        itemInUse = null;
+        break;
+      }
+    }
+  }
+
   // searching a tile (this was very hard to get right)
   if (keyCode === 32) { // if player clicks the space bar
     player.getNextTile(); // update the coordinates of the tile in front of the player
@@ -825,9 +854,11 @@ if (gameState === 1) { // doesnt interfere wuth other gamststes
       } else { // if it returns as false
         console.log('inventory is full');
       }
+    } else if (tileRules[player.nextTileY][player.nextTileX] === 0) { // if its not an item tile
+      console.log("you can't search the ground"); 
     } else { // if its not an item tile
-      console.log('there is nothing to pick up here'); 
-    }       
+      console.log("you didn't find anything"); 
+    } 
   }
 
   if (keyCode === 48) { // if player clicks 0
@@ -925,19 +956,33 @@ class Player {
   }
 
   updateSanity() {
-    if (this.inventory.items[10].isEquipped == true && this.isMoving == false && ghost.alert == false) {
-      this.sanity = this.sanity + 1;
+     if (this.inventory.items[10].isEquipped == true && this.isMoving == false) {
+      this.sanity = this.sanity + 3;
       if (this.sanity > 10000) {
         this.sanity = 10000; // cannot go over 10000
       }
-    } else if (this.sanity > 0 && ghost.alert == false) {
+    } else if (this.sanity > 0 && !ghost) {
       this.sanity = this.sanity - 1;
-    } else if (this.sanity > 0 && ghost.alert == true) {
+    } else if (this.sanity > 0 && ghost.alert == true) { // when you're in contact with the ghost your snity decreases
       this.sanity = this.sanity - 5;
     } else if (this.sanity == 0) {
       gameState = 2;
     } 
-  }
+
+    if (this.sanity > 0 && this.sanity < 1500 && !ghost) {
+      tint(255, random(100, 200));
+      image(lights, 0, 0, 660, 660);
+      tint(255, 0);
+    } else if (this.sanity > 0 && this.sanity < 1500 && ghost.alert == true) {
+      tint(255, random(0, 255));
+      image(lights, 0, 0, 660, 660);
+      tint(255, 0);
+    } else if (ghost && ghost.alert) {
+      tint(255, random(0, 100));
+      image(lights, 0, 0, 660, 660);
+      tint(255, 0);
+    }
+  } 
   
   display() {
     image(this.sprite, this.xPos, this.yPos, this.tileSize, this.tileSize);
@@ -1499,7 +1544,8 @@ class Ghost {
                     else this.dirY = 0
             }
         }
-          this.checkTargetTile()
+
+            this.checkTargetTile()
         }
     }
 
