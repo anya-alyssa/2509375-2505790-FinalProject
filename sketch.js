@@ -23,6 +23,9 @@ let invY = 0; // position to start where to draw the inventory
 
 let inputtedCode = ''; // for safe to get door key
 
+let message = ""; // can be filled depening on message
+let timer = 0; // so that it isnt constantly showing message
+
 let itemInUse = null;
 
 let allItems = {
@@ -182,7 +185,7 @@ let livingRoom = {
   //   0  1  2  3  4  5  6  7  8  9, 10
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 0
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 1  X
-      [1, 1, 1, 0, 0, 1, 3, 0, 0, 1, 1], // 2  
+      [1, 1, 1, 0, 0, 13, 3, 0, 0, 1, 1], // 2  
       [1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1], // 3  V
       [1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1], // 4  A
       [1, 0, "ent", 0, 13, 0, 0, 0, 1, 1, 1], // 5  L
@@ -223,7 +226,7 @@ let kitchen = {
         [1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1], // 2  
         [1, 13, 0, 0, 0, 0, 0, 0, 0, 0, "b"], // 3  V
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 4  A
-        [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1], // 5  L
+        [1, 1, 13, 1, 1, 13, 0, 0, 0, 0, 1], // 5  L
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], // 6  U
         [1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1], // 7  E
         [1, 0, 1, 1, 13, 0, 0, 0, 0, 0, "l"], // 8  S
@@ -260,7 +263,7 @@ let bathroom = {
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 1  X
         [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0], // 2  
         [1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0], // 3  V
-        [1, 0, 1, 1, 1, 1, 1, 10, 1, 0, 0], // 4  A
+        [1, 0, 1, 1, 13, 1, 1, 10, 1, 0, 0], // 4  A
         [0, 1, 1, "k", 0, 0, 0, 0, 1, 0, 1], // 5  L
         [1, 0, 1, 1, 12, 0, 13, 0, 1, 0, 0], // 6  U
         [1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0], // 7  E
@@ -295,10 +298,10 @@ let study = {
     //   0  1  2  3  4  5  6  7  8  9, 10
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 0
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 1  X
-        [1, 1, 11, 1, 1, "sr", 1, 1, 1, 1, 1], // 2  
+        [1, 1, 11, 1, 13, "sr", 1, 13, 1, 1, 1], // 2  
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1], // 3  V
         [1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1], // 4  A
-        [0, 1, 0, 0, 1, 1, 1, 0, 0, "ent", 1], // 5  L
+        [0, 1, 0, 0, 13, 1, 1, 0, 0, "ent", 1], // 5  L
         [1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1], // 6  U
         [1, 1, 0, 0, 0, 13, 0, 0, 0, 1, 1], // 7  E
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1], // 8  S
@@ -360,7 +363,7 @@ let ghostBedroom = {
     [4, 4, 2, 1, 0, 0, 0, 0, 0, 3, 4], // 5  L
     [4, 4, 2, 1, 0, 0, 0, 0, 0, 2, 4], // 6  U
     [4, 4, 2, 0, 0, 0, 0, 1, 1, 2, 4], // 7  E
-    [4, 4, 2, 2, 3, 2, 2, 2, 2, 2, 4], // 8  S
+    [4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 4], // 8  S
     [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],  // 9
     [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]  // 10
   ],
@@ -370,12 +373,12 @@ let ghostBedroom = {
   // 0  1  2  3  4  5  6  7  8  9, 10
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 0
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], // 1  X
-    [0, 0, 1, 1, 1, 1, 1, 13, 0, 1, 0], // 2  
-    [0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0], // 3  V
+    [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0], // 2  
+    [0, 0, 1, 0, 1, 1, 1, 13, 0, 1, 0], // 3  V
     [0, 0, 1, 0, 0, 13, 1, 0, 0, 1, 0], // 4  A
     [0, 0, 1, 5, 0, 0, 0, 0, 0, "l", 0], // 5  L
     [0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0], // 6  U
-    [0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0], // 7  E
+    [0, 0, 1, 0, 0, 0, 0, 1, 13, 1, 0], // 7  E
     [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0], // 8  S
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],  // 9
     [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0]  // 10
@@ -383,7 +386,6 @@ let ghostBedroom = {
 
   startTileX: 5,
   startTileY: 3 // starttiles for the player
-
 }
 
 let masterBedroom = {
@@ -411,7 +413,7 @@ let masterBedroom = {
     [0, 0, 1, 0, 0, 0, 0, 13, 1, 1, 0], // 2  
     [0, 0, 1, 13, 0, 0, 0, 1, 1, 1, 0], // 3  V
     [0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0], // 4  A
-    [0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0], // 5  L
+    [0, 0, 1, 1, 13, 0, 0, 1, 1, 1, 0], // 5  L
     [0, 0, 1, 8, 0, 0, 0, 1, 1, 1, 0], // 6  U
     [0, 0, 1, 0, 0, 0, 0, 6, 1, 1, 0], // 7  E
     [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0], // 8  S
@@ -481,7 +483,7 @@ function setup() {
 
   loadLevel();
 
-  textFont('Courier New');
+  textFont(gameFont);
 
   // create player
   player = new Player(playerSprite, 5, 9, tileSize, tileRules);
@@ -615,17 +617,28 @@ function preload() {
 
   // sanity
   lights = loadImage("images/void_50x.png");
+
+  // font
+  gameFont = loadFont('font/game_over.ttf');
 }
 
 function draw() {
   background(0);
 
 if (gameState == 0) {
-  textSize(50);
+  textSize(300);
   fill(255);
   background(0);
   textAlign(CENTER);
-  text('main menu', width/2, height/2);
+  text('HER', width/2, height/2);
+  textSize(75);
+  text('click SPACE to start', width/2, height/2 + 75);
+  textSize(55);
+  text('click C for how to play', width/2, height/2 + 125);
+  textSize(40);
+  text('TW: flashing images', width/2, height - 15)
+  //text('Brought to you by Anya Alyssa Patel and Nathan Fisho', width/2, height - 25);
+
 } else if (gameState == 1) {
   background(0);
   // loops through all tiles each time draw() is called
@@ -662,6 +675,18 @@ if (gameState == 0) {
     else count++;
   }
 
+  // item messaeg timer that couints down every frame
+  if (timer > 0) {
+    textAlign(CENTER);
+    stroke(150, 100, 20); // makes it stand out against background
+    strokeWeight(2);
+    textSize(100);
+    fill(255, 200, 20);
+    text(message, 335, height/2);
+
+    timer = timer - 1; // decreases by one every frame
+  }
+
   // display sanity bar
   stroke(0);
   strokeWeight(3);
@@ -669,7 +694,7 @@ if (gameState == 0) {
   rect(125, 665, 600, 30);
   strokeWeight(0);
   fill(255, 255, 0);
-  textSize(25);
+  textSize(65);
   textAlign(LEFT);
   text('SANITY:', 15, 687);
   
@@ -690,34 +715,59 @@ if (gameState == 0) {
 
 else if (gameState == 2) {
   background(0);
-  textSize(50);
+  textSize(275);
   fill(255);
   textAlign(CENTER);
-  text('game over', width/2, height/2);
+  text('GAME OVER', width/2, height/2 - 50);
+  textSize(150);
+  text('Ending 3: INSANITY', width/2, height/2 + 40);
+  textSize(60);
+  text('CTRL R to try again', width/2, height/2 + 100);
 } 
 
 else if (gameState == 3) {
-  textSize(50);
+  textSize(275);
   fill(255);
   background(0);
   textAlign(CENTER);
-  text('You Escaped', width/2, height/2);
+  text('YOU WIN', width/2, height/2 - 50);
+  textSize(150);
+  text('Ending 1: ESCAPE', width/2, height/2 + 40);
+  textSize(60);
+  text('CTRL R to play again', width/2, height/2 + 100);
 } 
 
 else if (gameState == 4) {
-  textSize(50);
+  textSize(300);
   fill(255);
   background(0);
   textAlign(CENTER);
-  text('You helped the ghost', width/2, height/2);
+  text('YOU WIN', width/2, height/2 - 50);
+  textSize(150);
+  text('Ending 2: PEACE', width/2, height/2 + 40);
+  textSize(60);
+  text('CTRL R to play again', width/2, height/2 + 100);
 }
 
 else if (gameState == 'a') {
   textAlign(CENTER);
   fill(255);
-  textSize(25);
-  text('Enter Code', width/2, height/2);
-  text(inputtedCode, width/2, 400);
+  textSize(200);
+  text('Enter Code', width/2, height/2 - 25);
+  textSize(150);
+  text(inputtedCode, width/2, 425);
+}
+
+else if (gameState == 'howTo') {
+  textAlign(CENTER);
+  fill(255);
+  textSize(200);
+  text('How To Play', width/2, 110);
+  textSize(48);
+  guide = "Manage your sanity! \n Press SPACE to search (you must be facing the object) \n Use keys 0-9 to access your inventory \n Press 'L' to use your locket (you must be standing still to use its ability!) \n Press Backspace to discard items (when equipped) \n Equip items before entering locked doors or interacting with closed objects \n Will you escape, succumb to your insanity, or help a restless ghost find peace? \n Press 'M' to go to Main Menu"
+
+  text(guide, 10, 190, 700, 700)
+
 }
 
 }
@@ -798,9 +848,11 @@ if (gameState === 1) { // doesnt interfere wuth other gamststes
         // runs function to add the item to the inventory and if it returns as true (adds the item to the inventory)
         if (player.inventory.addItem(itemTiles[targetTile])) {
           tileRules[player.nextTileY][player.nextTileX] = 1; // set the tile to an obstacle/empty
-          console.log('you picked up an item');
+          message = 'You found a key';
+          timer = 60;
         } else { // if it returns as false
-          console.log('inventory is full');
+          message = 'Inventory full!';
+          timer = 60;
         }
       }
     } else if (itemTiles[targetTile] == allItems.GhostRoomKey) {
@@ -809,15 +861,19 @@ if (gameState === 1) { // doesnt interfere wuth other gamststes
           // runs function to add the item to the inventory and if it returns as true (adds the item to the inventory)
           if (player.inventory.addItem(itemTiles[targetTile])) {
             tileRules[player.nextTileY][player.nextTileX] = 1; // set the tile to an obstacle/empty
-            console.log('you picked up an item');
+            message = 'You picked up a key';
+            timer = 60;
+
             player.inventory.removeItem(i);
             itemInUse = null;
             break; 
           } else { // if it returns as false
-            console.log('inventory is full');
+            message = 'Inventory full!';
+            timer = 60;
           }
         } else {
-          console.log('this cabinet seems to be locked...');
+          message = 'This cabinet is locked.';
+          timer = 60;;
         }
       } 
     } else if (itemTiles[targetTile] == allItems.CabinetKey) {
@@ -826,15 +882,19 @@ if (gameState === 1) { // doesnt interfere wuth other gamststes
           // runs function to add the item to the inventory and if it returns as true (adds the item to the inventory)
           if (player.inventory.addItem(itemTiles[targetTile])) {
             tileRules[player.nextTileY][player.nextTileX] = 1; // set the tile to an obstacle/empty
-            console.log('you picked up an item');
+            message = 'You found a key';
+            timer = 60;
+
             player.inventory.removeItem(i);
             itemInUse = null;
             break; 
           } else { // if it returns as false
-            console.log('inventory is full');
+            message = 'Inventory full!';
+            timer = 60;
           }
         } else {
-          console.log('this seems to be screwed on...');
+          message = 'This seems to be screwed on...';
+          timer = 60;
         }
       }
     } else if (itemTiles[targetTile] == allItems.Book) {
@@ -843,29 +903,39 @@ if (gameState === 1) { // doesnt interfere wuth other gamststes
           // runs function to add the item to the inventory and if it returns as true (adds the item to the inventory)
           if (player.inventory.addItem(itemTiles[targetTile])) {
             tileRules[player.nextTileY][player.nextTileX] = 1; // set the tile to an obstacle/empty
-            console.log('you picked up an item');
+            message = 'You found a book';
+            timer = 60;
             player.inventory.removeItem(i);
             itemInUse = null;
             break; 
           } else { // if it returns as false
-            console.log('inventory is full');
+            message = 'Inventory full!';
+            timer = 60;
           }
         } else {
-          console.log("It's locked. I wonder what's inside...");
+          message = "It's locked. I wonder what's inside...";
+          timer = 60;
         }
       }
     } else if (itemTiles[targetTile]) {
       // runs function to add the item to the inventory and if it returns as true (adds the item to the inventory)
       if (player.inventory.addItem(itemTiles[targetTile])) {
         tileRules[player.nextTileY][player.nextTileX] = 1; // set the tile to an obstacle/empty
-        console.log('you picked up an item');
+          message = 'You picked up an item';
+          timer = 60;
       } else { // if it returns as false
-        console.log('inventory is full');
+        message = 'Inventory full!';
+        timer = 60;
       }
-    } else if (tileRules[player.nextTileY][player.nextTileX] === 0) { // if its not an item tile
-      console.log("you can't search the ground"); 
+    } else if (tileRules[player.nextTileY][player.nextTileX] === 0) { // if theyre trying ot search the ground show nothing
+        message = "";
+        timer = 0; 
+    } else if (graphicsMap[player.nextTileY][player.nextTileX] === 2 || graphicsMap[player.nextTileY][player.nextTileX] === 3) { // if they are trying ot search the floor or a doorw show nothing
+        message = "";
+        timer = 0; 
     } else { // if its not an item tile
-      console.log("you didn't find anything"); 
+        message = random(["There's nothing here", "You didn't find anything", "Nothing!"]);
+        timer = 60; 
     } 
   }
 
@@ -913,12 +983,24 @@ if (gameState === 1) { // doesnt interfere wuth other gamststes
     if (inputtedCode === '6382') {
       safeOpened = true;
       gameState = 1;
-      console.log('safe opened');
+      message = 'Safe opened!';
+      timer = 60;
     } else {
       gameState = 1;
-      console.log('incorrect code');
+      message = 'Incorrect code';
+      timer = 60;
     }
       inputtedCode = '';
+  }
+} else if (gameState === 0) {
+  if (keyCode === 32) { // space to start game
+    gameState = 1;
+  } else if (keyCode === 67) { // c for controls
+    gameState = 'howTo';
+  }
+} else if (gameState === 'howTo') { 
+  if (keyCode === 77) { // m for main menu
+    gameState = 0;
   }
 }
 }
@@ -978,7 +1060,7 @@ class Player {
       this.sanity = this.sanity - 5;
     } else if (this.sanity > 0 && ghost.playerCollision() == true) {
       this.sanity = this.sanity - 10;
-    } else if (this.sanity == 0) {
+    } else if (this.sanity <= 0) {
       gameState = 2;
     } 
 
@@ -1167,7 +1249,12 @@ class Player {
                 count = 0;
                 this.transition = true;
               } else {
-                console.log('you need a key to open this door');
+                textAlign(CENTER);
+                stroke(100, 0, 0);
+                strokeWeight(2);
+                textSize(100);
+                fill(255, 0, 0);
+                text("Damn. It's locked.", 335, height/2);
               } 
             } else if (currentRoom == 8) {
               previousRoom = currentRoom;
@@ -1230,7 +1317,12 @@ class Player {
               count = 0;
               this.transition = true;
             } else {
-              console.log('you need a key to open this door');
+              textAlign(CENTER);
+              stroke(100, 0, 0);
+              strokeWeight(2);
+              textSize(100);
+              fill(255, 0, 0);
+              text('It must be locked...', 335, height/2);
             }
           }
 
@@ -1278,7 +1370,12 @@ class Player {
               count = 0;
               this.transition = true;
             } else {
-              console.log('you need a key to open this door');
+              textAlign(CENTER);
+              stroke(100, 0, 0);
+              strokeWeight(2);
+              textSize(100);
+              fill(255, 0, 0);
+              text('Hmm...where could the key be?', 335, height/2);
             }
           }
 
@@ -1327,7 +1424,12 @@ class Player {
               count = 0;
               this.transition = true;
             } else {
-              console.log('it looks like there is a book missing here');
+              textAlign(CENTER);
+              stroke(100, 0, 0);
+              strokeWeight(2);
+              textSize(100);
+              fill(255, 0, 0);
+              text('It looks like something is missing here...', 335, height/2);
             }
           }
           
@@ -1335,7 +1437,12 @@ class Player {
             if (itemInUse === "Gold Key") {
               gameState = 3;
             } else {
-              console.log('you need a key to open this door');
+              textAlign(CENTER);
+              stroke(100, 0, 0);
+              strokeWeight(2);
+              textSize(100);
+              fill(255, 0, 0);
+              text('The front door seems to be locked...', 335, height/2);
             } 
           }
 
