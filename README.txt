@@ -44,7 +44,7 @@ I initially had hoped to include due to realising it was too ambitious to figure
 As I got further and further into coding the game, I found myself having to look at references less and less and 
 also found that it got quicker and quicker to implement things. 
 
-I also did some of the artwork myself, for example all of the items and FINISH
+I also did some of the artwork myself, for example all of the inventory items and FINISH
 
 Nathan: Artwork
 
@@ -90,7 +90,7 @@ match, gamestate = 1 and the action is successful and if not you try again.
 
 I also would have liked to implement more of a narrative/cut scenes, for example for the endings or as the ghost is 
 chasing you around. Even just having more items that connote a story, like photographs that enlarge on the screen when 
-equipped, simply just by printing the image when equipped. 
+equipped, simply just by printing the image when equipped (sort of like when you equip the paper with the code on it). 
 
 I would also like to have added audio, for example eerie background music or sounds, and intense music/heartbeats for
 when the ghost is chasing oyu or your sanity is low. Also interacting with objects would make sounds, for example 

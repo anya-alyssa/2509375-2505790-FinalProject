@@ -607,13 +607,17 @@ function preload() {
   // items 
   allItems.Locket.img = loadImage("images/locket.jpg");
   allItems.Paper.img = loadImage("images/paper.jpg");
-  allItems.StudyKey.img = loadImage("images/rustyKey.jpg"); // CHANGE TO DAMAGED KEY
-  allItems.ParentRoomKey.img = loadImage("images/silverKey.jpg"); // CHNAGE TO LOST KEY
+  allItems.StudyKey.img = loadImage("images/damagedKey.jpg");
+  allItems.ParentRoomKey.img = loadImage("images/lostKey.jpg");
   allItems.GhostRoomKey.img = loadImage("images/silverKey.jpg");
   allItems.DoorKey.img = loadImage("images/goldKey.jpg");
   allItems.Teddy.img = loadImage("images/teddy.jpg");
   allItems.Book.img = loadImage("images/book.jpg");
   allItems.CabinetKey.img = loadImage("images/rustyKey.jpg");
+  allItems.BedsideTableKey.img = loadImage("images/smallKey.jpg");
+  allItems.ToolKit.img = loadImage("images/toolKit.jpg");
+
+
 
   // sanity
   lights = loadImage("images/void_50x.png");
@@ -687,6 +691,19 @@ if (gameState == 0) {
     timer = timer - 1; // decreases by one every frame
   }
 
+  // code message on screen
+  if (itemInUse === "Crumpled Paper") {
+    stroke(150);
+    strokeWeight(3);
+    fill(230);
+    rect(153, height/2 - 120, 360, 160);
+    noStroke();
+    textAlign(CENTER);
+    textSize(300);
+    fill(0);
+    text('6382', 330, height/2);
+  }
+
   // display sanity bar
   stroke(0);
   strokeWeight(3);
@@ -722,7 +739,7 @@ else if (gameState == 2) {
   textSize(150);
   text('Ending 3: INSANITY', width/2, height/2 + 40);
   textSize(60);
-  text('CTRL R to try again', width/2, height/2 + 100);
+  text('Click CTRL R to try again', width/2, height/2 + 100);
 } 
 
 else if (gameState == 3) {
@@ -734,7 +751,7 @@ else if (gameState == 3) {
   textSize(150);
   text('Ending 1: ESCAPE', width/2, height/2 + 40);
   textSize(60);
-  text('CTRL R to play again', width/2, height/2 + 100);
+  text('Click CTRL R to play again', width/2, height/2 + 100);
 } 
 
 else if (gameState == 4) {
@@ -746,7 +763,7 @@ else if (gameState == 4) {
   textSize(150);
   text('Ending 2: PEACE', width/2, height/2 + 40);
   textSize(60);
-  text('CTRL R to play again', width/2, height/2 + 100);
+  text('Click CTRL R to play again', width/2, height/2 + 100);
 }
 
 else if (gameState == 'a') {
