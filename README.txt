@@ -11,19 +11,43 @@ A copy of this can be found on notion here: https://hughdeleuzer.notion.site/Rea
 
 ---------------------------------------------------------------------------------------------------------
 
-PROJECT NAME: insert your project name here
+PROJECT NAME: Escape Haunted the House Project - 'HER'
 
-BY (team name)
-MEMBERS: (List of Members + Candidate Numbers) 
+BY Patel and Fisho
+MEMBERS: Anya Patel, 2509375 and Nathan Fisho, 2505790
 
 LINK TO GITHUB REPO: [insert link here]
 LINK TO GITHUB PAGES: [insert link here]
 
 OVERVIEW OF PROJECT
-Describe your project in a few sentences. What is it about? What are its key technical features? 
-What are its key themes, aesthetics, etc.
+This project is a psychological horror game set in a haunted house, where players have to try and escape 
+the house while maintaining their sanity, searching the house for items and navigated lcoked doors, all 
+the while running from a ghost that randomly appears. The key technical features are the sanity mechanic, 
+the ghost, an inventory system, item and room interaction and having multiple endings. The key themes and 
+aesthetics are fear, insanity and speed.
 
 INDIVIDUAL CONTRIBUTION
+Anya: Coding + Artwork
+I was responsible for all the coding of the project, so implementing game mechanics, interactitvity and 
+just the overall functioality of the game. I used the base code we started off in lectures and then made it
+my own and branched off from there. I started by adding what I learnt from lectures, so added more tilemaps,
+made an inventory class template and drew the grid for the inventory. As well as this I added a sanity bar 
+and then attempted to create different mechanics such as the inventory system, a way ot pick up/search places 
+and the safe code "puzzle", and struggled. If I found something hard I would look at the p5.js reference, 
+javascript tutorials and/or other peoples p5.js projects, for example by searching "typing game p5.js" and then
+adapting what I saw to fit my game or getting to grips with different ways I could go about doing it. The logic of 
+things was a lot of trial and error, for example the inventory searching had to make sure there were items in the 
+inventory first but I would just go straight into searching for items. Mechanics like the locket unequipping when 
+the player moved took me a while because the player.isMoving wouldnt work so instead I changed it to detect the 
+movemnt keys being pressed. I wasn't able to implement audio, a ghost patrolling system and a hiding system that 
+I initially had hoped to include due to realising it was too ambitious to figure out in the time I had given myself.
+As I got further and further into coding the game, I found myself having to look at references less and less and 
+also found that it got quicker and quicker to implement things. 
+
+I also did some of the artwork myself, for example all of the items and FINISH
+
+Nathan: Artwork
+
 Each team members should write a detailed explanation of their individual contribution to the project.
 Be specific: 50% of your mark will be based on your individual contributions, so your marker needs to
 know exactly what you contributed. Explain your process and how you went about it. What research did
@@ -34,9 +58,14 @@ practical possibilities within the time and technical constraints is a key skill
 detailed and clear, and include *any* contribution you made to the project.
 
 THEMES
-Discuss the main themes of your PROJECT and how you approached communicating them through the project. 
-Remember: the module is called 'coding for the arts', so think about how you approached expressing 
-your ideas through the technical aspects of the project!
+The main themes of the project are fear, insanity and speed. For fear, I created suspensful gameplay by
+having the ghost spawn and despawn randomly, keeping the player on their toes. Not only this I used the 
+chase function to make it more tense. This ties into speed as the player has to run away from the ghost 
+try to escape before they go insane, which leads me into the sanity aspect. Not only does sanity decrease
+just by being in the house, but it decreases faster when the ghost is nearby, chasing you or even faster
+when it collides with you. On top of this, the screen starts flickering and the sanity bar chances colour 
+as it gets lower. This all combined promotes the themes of fear, insanity and speed, while conforming to    
+norms of traditional psychological horror games.
 
 DESIGN
 Discuss the overall mechanical aspects of the project. Think about how it connects with your themes
@@ -50,10 +79,31 @@ project? Again, think about how your artistic and/or aesthetic choices were info
 of the technical systems of the project.
 
 UNREALISED ASPECTS OF PROJECT
-Discuss here any aspects of the project you would have included if you had more time. Think about technical
-issues you had and how you might go about trying to fix them (or how you'd start the research process) if
-time and scope allowed. What other mechanics or ideas would you have implemented with more time? How would you
-have gone about implementing these?
+If I had more time, I would've implemented more puzzle based interactions, for example like the saef but it would
+be slotting the right key into the keyhole, dragging the book onto the bookcase, finding puzzle pieces around
+the house to form an image, (maybe another ending or just for more of a narrative). These would be done similarly
+to how the safe "game" was implemented: changing the gamestate and then taking user input and having a right and
+wrong input. For example dragging an image of the correct book/key into the shelf space/keyhole and if the positions
+match, gamestate = 1 and the action is successful and if not you try again. 
 
-You may include more titles and text if you desire beyond the above titles if you want. Put them here at the bottom.
-You may, for instance, want to include a narrative section if story is particularly important to your project.
+I also would have liked to implement more of a narrative/cut scenes, for example for the endings or as the ghost is 
+chasing you around. Even just having more items that connote a story, like photographs that enlarge on the screen when 
+equipped, simply just by printing the image when equipped. 
+
+I would also like to have added audio, for example eerie background music or sounds, and intense music/heartbeats for
+when the ghost is chasing oyu or your sanity is low. Also interacting with objects would make sounds, for example 
+opening and closing doors or unlocking something.
+
+Finally I would have liked to make a more in depth ghost, where it patrols around the house and has a complex path 
+finding algorithm. When the ghost comes the player has to hide, which also means adding a hiding system which I would
+implement by when the character approaches a table, for example, and clicks 'H' or shift their sprite disappears and 
+they're in state 'hiding' which would be a state that cannot trigger the ghosts chase() function. I would also like 
+to add more ghosts or the parents ghosts haunting just their room as it is a room that the main ghost cannot enter.
+
+NARRATIVE
+While I did not have time to complete a full narrative, the implied narrative was that the ghost is haunting her 
+childhood home. It is uncovered (by finding the secret room) that she used to be locked in a basement where you can
+find her teddy that was left in there. the ghost refuses to go back into the room but bringing it to her gives her 
+peace. She is unable to go into her parents room as she was never allowed in there as a child (and if i implemented 
+her parents as ghosts in their bedroom, teh reason was also since she locked them in their room, hence why she has 
+the key hidden in her room)
