@@ -764,7 +764,7 @@ else if (gameState == 'howTo') {
   textSize(200);
   text('How To Play', width/2, 110);
   textSize(48);
-  guide = "Manage your sanity! \n Press SPACE to search (you must be facing the object) \n Use keys 0-9 to access your inventory \n Press 'L' to use your locket (you must be standing still to use its ability!) \n Press Backspace to discard items (when equipped) \n Equip items before entering locked doors or interacting with closed objects \n Will you escape, succumb to your insanity, or help a restless ghost find peace? \n Press 'M' to go to Main Menu"
+  guide = "Manage your sanity! \n Press SPACE to search (you must be facing the object) \n Use keys 0-9 to access your inventory \n Press L to use your locket (you must be standing still to use its ability!) \n Press Q on equipped items to discard them (not all items can be discarded) \n Equip items before entering locked doors or interacting with closed objects \n Will you escape, succumb to your insanity, or help a restless ghost find peace? \n Press M to go to Main Menu"
 
   text(guide, 10, 190, 700, 700)
 
@@ -1429,7 +1429,7 @@ class Player {
               strokeWeight(2);
               textSize(100);
               fill(255, 0, 0);
-              text('It looks like something is missing here...', 335, height/2);
+              text('It looks like a book is missing here...', 335, height/2);
             }
           }
           
@@ -1533,7 +1533,7 @@ class Inventory {
           noTint();
         } else {
           fill(255);
-          textSize(10);
+          textSize(25);
           noStroke();
           textAlign(CENTER);
           text(this.items[i].name, x + 30, y + 35);
@@ -1543,7 +1543,7 @@ class Inventory {
       // number each box
       fill(255);
       noStroke();
-      textSize(10);
+      textSize(30);
       textAlign(LEFT);
       if (i !== 10) {
         text(i, x + 5, y + 15); // adds padding and increments number

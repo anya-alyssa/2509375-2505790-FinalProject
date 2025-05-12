@@ -78,6 +78,8 @@ As a group, how did you ensure parity between the aesthetic, technical and thema
 project? Again, think about how your artistic and/or aesthetic choices were informed by your understanding
 of the technical systems of the project.
 
+font used: https://www.dafont.com/game-over.font?text=click+SPACE+to+start
+
 UNREALISED ASPECTS OF PROJECT
 If I had more time, I would've implemented more puzzle based interactions, for example like the saef but it would
 be slotting the right key into the keyhole, dragging the book onto the bookcase, finding puzzle pieces around
