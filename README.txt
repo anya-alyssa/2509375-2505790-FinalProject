@@ -17,7 +17,9 @@ BY Patel and Fisho
 MEMBERS: Anya Patel, 2509375 and Nathan Fisho, 2505790
 
 LINK TO GITHUB REPO: https://github.com/anya-alyssa/2509375-2505790-FinalProject.git
-LINK TO GITHUB PAGES: [insert link here]
+LINK TO GITHUB PAGES: https://anya-alyssa.github.io/2509375-2505790-FinalProject/
+--> the pages link does not run due to leftCounter.jpg not being a file, however I have checked and I have 
+the image in my folder. I'm not usre why this is happening as it runs fine from VScode.
 
 OVERVIEW OF PROJECT
 This project is a psychological horror game set in a haunted house, where players have to try and escape 
