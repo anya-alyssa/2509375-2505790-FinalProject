@@ -29,8 +29,26 @@ aesthetics are fear, insanity and speed.
 note - sometimes using the silver key does not open the upstairs ghost bedroom door. I couldn't figure out 
 why or how to fix it. it usually works if it is the only/first thing in your inventory.
 
+note - you must be FACING an object to search it (walk into it to ensure you are facing it). since i didnt 
+have time to implement different character artwork it is hard to tell where you are facing but it appears 
+in console when you click space. 
+
+Incase: 
+ITEM LOCATIONS:
+Study key --> bottom plant pot in living room
+toolkit --> far left bookshelf in Study
+cabinet key --> toilet (need toolkit)
+nightstand key --> laundry basket (bathroom)
+ghosts bedroom key --> kitchen cabinet
+parents room key:--> ghosts room nightstand
+door key --> safe (code: 6382)
+code --> top most couch on the right half
+missing book --> parents nightstand (need nightstand key)
+teddy --> bookshelf behind chair in study (use as key to enter basement and get teddy)
+
+
 INDIVIDUAL CONTRIBUTION
-Anya: Coding + Artwork
+Anya: Job - Coding + Artwork
 I was responsible for all the coding of the project, so implementing game mechanics, interactitvity and 
 just the overall functioality of the game. I used the base code we started off in lectures and then made it
 my own and branched off from there. I started by adding what I learnt from lectures, so added more tilemaps,
@@ -54,7 +72,7 @@ This took up a large chunk of time and was very last minute and I was initially 
 extra tiles I wanted to include, like paintings on the walls, carpets, broken tiles or floorboards. Including these 
 would have taken a considerably longer amount of time.
 
-Nathan: Artwork
+Nathan: Job - Artwork
 Nothing.
 
 Each team members should write a detailed explanation of their individual contribution to the project.
