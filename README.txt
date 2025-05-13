@@ -131,7 +131,8 @@ I would have liked for the artwork to be more detailed/the proportions of it to 
 or the doors. Due to time, this was difficult. Not only this I wanted some objetcs to change when unlucked or an image 
 was taken/put back, for example the bookshelves had different states (found in images) but I did not have time to 
 implemement this. I also would have liked the character to actually appear in the direction they were factng but did
-not have time to implement this. 
+not have time to implement this. I would have liked all of the ending and the main menu screens, etc. to have proper 
+artwork.
 
 Finally I would have liked to make a more in depth ghost, where it patrols around the house and has a complex path 
 finding algorithm. When the ghost comes the player has to hide, which also means adding a hiding system which I would
