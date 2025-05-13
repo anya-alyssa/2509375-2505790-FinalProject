@@ -399,7 +399,7 @@ let masterBedroom = {
     [4, 4, 2, 46, 47, 0, 0, 0, 2, 4, 4], // 4  A
     [4, 4, 2, 48, 49, 0, 0, 16, 2, 4, 4], // 5  L
     [4, 4, 2, 45, 0, 0, 19, 17, 2, 4, 4], // 6  U
-    [4, 4, 2, 0, 0, 0, 0, 5, 2, 4, 4], // 7  E
+    [4, 4, 2, 0, 0, 0, 0, 65, 2, 4, 4], // 7  E
     [4, 4, 2, 2, 2, 2, 2, 2, 2, 4, 4], // 8  S
     [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],  // 9
     [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]  // 10
@@ -434,8 +434,8 @@ let secretRoom = {
       [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 1  X
       [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 2  
       [4, 4, 5, 5, 5, 5, 5, 5, 5, 4, 4], // 3  V
-      [4, 4, 5, 4, 6, 5, 6, 5, 5, 4, 4], // 4  A
-      [4, 4, 5, 4, 6, 6, 6, 6, 5, 4, 4], // 5  L
+      [4, 4, 5, 67, 6, 3, 6, 66, 5, 4, 4], // 4  A
+      [4, 4, 5, 68, 6, 6, 6, 6, 5, 4, 4], // 5  L
       [4, 4, 5, 6, 6, 6, 6, 6, 5, 4, 4], // 6  U
       [4, 4, 5, 5, 5, 56, 5, 5, 5, 4, 4], // 7  E
       [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], // 8  S
@@ -594,7 +594,7 @@ function preload() {
   textures[0] = loadImage("images/woodFloor.jpg");
   textures[1] = loadImage("images/tile.jpg");
   textures[2] = loadImage("images/wall.jpg");
-  textures[3] = loadImage("images/door.png");
+  textures[3] = loadImage("images/teddyTile.jpg");
   textures[4] = loadImage("images/void_50x.png");
   textures[5] = loadImage("images/basementWall.jpg"); 
   textures[6] = loadImage("images/basementFloor.jpg");
@@ -656,6 +656,10 @@ function preload() {
   textures[62] = loadImage("images/door3.jpg");
   textures[63] = loadImage("images/door4.jpg");
   textures[64] = loadImage("images/door5.jpg");
+  textures[65] = loadImage("images/safe.jpg");
+  textures[66] = loadImage("images/plate.jpg");
+  textures[67] = loadImage("images/blanketT.jpg");
+  textures[68] = loadImage("images/blanketB.jpg");
 
 
 
@@ -666,7 +670,7 @@ function preload() {
   playerSprite = loadImage("images/character.png");
 
   // ghost
-  ghostSprite = loadImage("images/librarian-pink.png");
+  ghostSprite = loadImage("images/ghost.png");
 
   // items 
   allItems.Locket.img = loadImage("images/locket.jpg");
@@ -1586,7 +1590,7 @@ class Inventory {
 
   removeItem(slot) {
     if (slot >= 0 && slot < this.items.length) { 
-      if (this.items[slot] && this.items[slot].name === "Locket") {
+      if (this.items[slot] && this.items[slot].name && this.items[slot].name === "Locket") {
         // say you cannot drop this item
       } else {
         this.items[slot] = null;
