@@ -16,7 +16,7 @@ PROJECT NAME: Escape Haunted the House Project - 'HER'
 BY Patel and Fisho
 MEMBERS: Anya Patel, 2509375 and Nathan Fisho, 2505790
 
-LINK TO GITHUB REPO: [insert link here]
+LINK TO GITHUB REPO: https://github.com/anya-alyssa/2509375-2505790-FinalProject.git
 LINK TO GITHUB PAGES: [insert link here]
 
 OVERVIEW OF PROJECT
@@ -25,6 +25,9 @@ the house while maintaining their sanity, searching the house for items and navi
 the while running from a ghost that randomly appears. The key technical features are the sanity mechanic, 
 the ghost, an inventory system, item and room interaction and having multiple endings. The key themes and 
 aesthetics are fear, insanity and speed.
+
+note - sometimes using the silver key does not open the upstairs ghost bedroom door. I couldn't figure out 
+why or how to fix it. it usually works if it is the only/first thing in your inventory.
 
 INDIVIDUAL CONTRIBUTION
 Anya: Coding + Artwork
@@ -44,9 +47,15 @@ I initially had hoped to include due to realising it was too ambitious to figure
 As I got further and further into coding the game, I found myself having to look at references less and less and 
 also found that it got quicker and quicker to implement things. 
 
-I also did some of the artwork myself, for example all of the inventory items and FINISH
+In the end, I was also responsible for all of the artwork in the game. I used references of images online and 
+redraw them how I wanted them to be/used them for guidance for proprtions or aesthetics. I tried to sticks to yellows 
+(theme of insanity), purple (theme of fear) and red (theme of danger/urgency) and blues (sadness but also calmness).
+This took up a large chunk of time and was very last minute and I was initially very ambitious with the amount of 
+extra tiles I wanted to include, like paintings on the walls, carpets, broken tiles or floorboards. Including these 
+would have taken a considerably longer amount of time.
 
 Nathan: Artwork
+Nothing.
 
 Each team members should write a detailed explanation of their individual contribution to the project.
 Be specific: 50% of your mark will be based on your individual contributions, so your marker needs to
@@ -74,6 +83,10 @@ understanding of the technical systems that you were taught in class (and partic
 the assessment brief).
 
 AESTHETIC DIMENSIONS
+To ensure the artstyle remained the same for the project there was one artist. Colour scheme was to stick to yellows 
+(theme of insanity), purple (theme of fear) and red (theme of danger/urgency) and blues (sadness but also calmness) 
+and overall dark colours.
+
 As a group, how did you ensure parity between the aesthetic, technical and thematic demands of the
 project? Again, think about how your artistic and/or aesthetic choices were informed by your understanding
 of the technical systems of the project.
@@ -96,11 +109,20 @@ I would also like to have added audio, for example eerie background music or sou
 when the ghost is chasing oyu or your sanity is low. Also interacting with objects would make sounds, for example 
 opening and closing doors or unlocking something.
 
+I would have liked for the artwork to be more detailed/the proportions of it to be more accurate, for example the walls 
+or the doors. Due to time, this was difficult. Not only this I wanted some objetcs to change when unlucked or an image 
+was taken/put back, for example the bookshelves had different states (found in images) but I did not have time to 
+implemement this. I also would have liked the character to actually appear in the direction they were factng but did
+not have time to implement this. 
+
 Finally I would have liked to make a more in depth ghost, where it patrols around the house and has a complex path 
 finding algorithm. When the ghost comes the player has to hide, which also means adding a hiding system which I would
 implement by when the character approaches a table, for example, and clicks 'H' or shift their sprite disappears and 
 they're in state 'hiding' which would be a state that cannot trigger the ghosts chase() function. I would also like 
 to add more ghosts or the parents ghosts haunting just their room as it is a room that the main ghost cannot enter.
+
+note - sometimes using the silver key does not open the upstairs ghost bedroom door. I couldn't figure out 
+why or how to fix it. it usually works if it is the only/first thing in your inventory.
 
 NARRATIVE
 While I did not have time to complete a full narrative, the implied narrative was that the ghost is haunting her 
